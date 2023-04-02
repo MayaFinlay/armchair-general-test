@@ -177,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4.55
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7844, y: 0, z: -10}
+  m_LocalPosition: {x: 2.07, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -270,9 +270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f398faa8dc45bc845b5e322e930edc78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWorldSize: {x: 11.91, y: 9.7}
+  gridWorldSize: {x: 9, y: 9}
   nodeRadius: 0.5
-  debugMode: 0
+  debugMode: 1
 --- !u!4 &811841007
 Transform:
   m_ObjectHideFlags: 0
@@ -346,7 +346,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2f1e8ff398590c847a1b7e125c03c641, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c8e05fba5f4774a4288d9463d86bc6aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -365,8 +365,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1450049085}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.787, y: 0.0048, z: 0}
-  m_LocalScale: {x: 8.233934, y: 6.750807, z: 1}
+  m_LocalPosition: {x: 2.0902, y: 0, z: 0}
+  m_LocalScale: {x: 0.8453152, y: 0.8453152, z: 0.8453152}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
