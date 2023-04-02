@@ -35,17 +35,28 @@ public class PlacementManager : MonoBehaviour
 
     private void UnitSelected()
     {
-        placementIcon.GetComponent<SpriteRenderer>().sprite = unitSprites[unitToBePlaced];
-        placementIcon.SetActive(true);
         if (!unitSelected)
+        {
+            placementIcon.GetComponent<SpriteRenderer>().sprite = unitSprites[unitToBePlaced];
+            placementIcon.SetActive(true);
             unitSelected = true;
+        }    
+    }
+
+    private void UnitDeselected()
+    {
+        if (unitSelected)
+        {
+            placementIcon.SetActive(false);
+            unitSelected = false;
+        }    
     }
 
     void Update()
     {
-        CursorPosition();
-        PlacementIndicatorFollow();
-        UnitPlacement();
+        CursorPosition(); //Find cursor position
+        UnitPlacement(); //Unit placement functionality
+        PlacementIndicatorFollow(); //Indicator follow cursor
     }
 
     private void CursorPosition()
@@ -70,18 +81,18 @@ public class PlacementManager : MonoBehaviour
                     Instantiate(unitPrefabs[unitToBePlaced], gridSquarePos, Quaternion.identity);
                 }
             }
-            placementIcon.SetActive(false);
-            unitSelected = false;
+            UnitDeselected();
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            unitSelected = false;
+            UnitDeselected();
         }
     }
 
     private void PlacementIndicatorFollow()
     {
-        placementIcon.transform.position = worldMousePos;
+        if(unitSelected)
+            placementIcon.transform.position = worldMousePos;
     }
     
     //Checks to see if cursor is in bounds of grid
