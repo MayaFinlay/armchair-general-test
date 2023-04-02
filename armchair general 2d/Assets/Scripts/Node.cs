@@ -7,6 +7,7 @@ public class Node : IComparable<Node>
     public int x, y;
     public bool walkable;
     public Vector2 worldPosition;
+    public bool hasUnit = false;
 
     //Pathfinding
     public Node parent;

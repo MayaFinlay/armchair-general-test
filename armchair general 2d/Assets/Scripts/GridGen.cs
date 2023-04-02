@@ -8,9 +8,11 @@ public class GridGen : MonoBehaviour
     public Node[,] grid { get; private set; }
 
     [SerializeField] private Vector2 gridWorldSize;
-    private int gridSizeX;
-    private int gridSizeY;
-    [SerializeField] private float nodeRadius;
+
+    [HideInInspector] public int gridSizeX;
+    [HideInInspector] public int gridSizeY;
+
+    public float nodeRadius;
     private float nodeDiameter;
 
     [SerializeField] private bool debugMode = false;
