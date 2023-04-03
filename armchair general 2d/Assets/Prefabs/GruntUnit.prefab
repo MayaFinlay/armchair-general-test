@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7499706947826854592}
   - component: {fileID: 6115836541213303551}
   - component: {fileID: 1548278638825756413}
+  - component: {fileID: -5196171481589225105}
   m_Layer: 0
   m_Name: GruntUnit
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658567158731565865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.24, y: 1.42, z: -0.07}
+  m_LocalPosition: {x: 1.24, y: 1.42, z: -50}
   m_LocalScale: {x: 5.0482, y: 5.0482, z: 5.0482}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100,4 +101,19 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.07
+  m_Radius: 0.08
+--- !u!114 &-5196171481589225105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658567158731565865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3237c4d55a8dba49b8e52bfe72a0172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridReference: {fileID: 0}
+  placementIcon: {fileID: 0}
+  unitSelected: 0

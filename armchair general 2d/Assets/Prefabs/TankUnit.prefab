@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2152256835836765993, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_Name
-      value: GruntUnit
+      value: TankUnit
       objectReference: {fileID: 0}
     - target: {fileID: 6775068420526927615, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_Sprite
@@ -29,7 +29,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7119768251228858048, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.07
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 7119768251228858048, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_LocalRotation.w
