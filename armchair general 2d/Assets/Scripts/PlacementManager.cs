@@ -6,31 +6,42 @@ public class PlacementManager : MonoBehaviour
 {
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
+    [SerializeField] private ShopManager shopReference;
     [SerializeField] private GameObject[] unitPrefabs;
     [SerializeField] private GameObject placementIcon;
     [SerializeField] private Sprite[] unitSprites;
     private Vector3 rawMousePos;
     private Vector3 worldMousePos;
 
-    private bool unitSelected = false;
-    private int unitToBePlaced; //Grunt = 0, Sniper = 1, Tank = 2
+    [HideInInspector] public bool unitSelected = false;
+    [HideInInspector] public int unitToBePlaced; //Grunt = 0, Sniper = 1, Tank = 2
 
     public void PlaceGrunt()
     {
         unitToBePlaced = 0;
-        UnitSelected();
+        if (shopReference.playerCurrency >= shopReference.shopPrices[unitToBePlaced])
+        {
+            UnitSelected();
+        }
+
     }
 
     public void PlaceSniper()
     {
         unitToBePlaced = 1;
-        UnitSelected();
+        if (shopReference.playerCurrency >= shopReference.shopPrices[unitToBePlaced])
+        {
+            UnitSelected();
+        }
     }
 
     public void PlaceTank()
     {
         unitToBePlaced = 2;
-        UnitSelected();
+        if (shopReference.playerCurrency >= shopReference.shopPrices[unitToBePlaced])
+        {
+            UnitSelected();
+        }
     }
 
     private void UnitSelected()
@@ -79,6 +90,7 @@ public class PlacementManager : MonoBehaviour
                     Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;
                     Instantiate(unitPrefabs[unitToBePlaced], gridSquarePos, Quaternion.identity);
+                    shopReference.playerCurrency = shopReference.playerCurrency - shopReference.shopPrices[unitToBePlaced];
                 }
             }
             UnitDeselected();
