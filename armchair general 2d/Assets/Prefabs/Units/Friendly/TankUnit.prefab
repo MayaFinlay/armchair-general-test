@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TankUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 4411642703045846383, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: unitType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6775068420526927615, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -29,7 +33,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7119768251228858048, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -50
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7119768251228858048, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_LocalRotation.w

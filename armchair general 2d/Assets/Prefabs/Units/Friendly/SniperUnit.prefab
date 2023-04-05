@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: unitType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1658567158731565865, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_Name
       value: SniperUnit
@@ -29,7 +33,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7499706947826854592, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -50
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7499706947826854592, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_LocalRotation.w

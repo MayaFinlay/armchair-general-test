@@ -6,17 +6,26 @@ public class UnitControl : MonoBehaviour
 {
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
+    [SerializeField] private ShopManager shopReference;
     [SerializeField] private GameObject placementIcon;
     private Vector3 rawMousePos;
     private Vector3 worldMousePos;
-    //[HideInInspector] 
-    [SerializeField] private bool unitSelected = false;
-    [SerializeField] private Node previousNode; 
 
-     void Awake()
+    public bool unitSelected = false;
+
+    [SerializeField] private Node previousNode;
+
+    [Header("Unit Stats")]
+    public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
+    //[SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
+    public bool upgraded = false;
+
+
+    void Awake()
     {
         gridReference = GameObject.Find("GridGenerator").GetComponent<GridGen>();
-        placementIcon = GameObject.Find("PlacementCursorIcon");
+        shopReference = GameObject.Find("ShopManager").GetComponent<ShopManager>();
+        placementIcon = GameObject.Find("PlacementManager").transform.Find("PlacementCursorIcon").gameObject; 
     }
 
     void Update()
@@ -29,6 +38,8 @@ public class UnitControl : MonoBehaviour
     void OnMouseDown()
     {
         UnitSelected();
+        shopReference.unitToUpgrade = this.gameObject;
+        shopReference.DisplayWithUpgrade();
     }
 
     private void UnitSelected()
@@ -38,6 +49,8 @@ public class UnitControl : MonoBehaviour
             placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
             placementIcon.SetActive(true);
             unitSelected = true;
+            shopReference.unitUpgraded = upgraded;
+            shopReference.unitType = unitType;
         }
     }
 
