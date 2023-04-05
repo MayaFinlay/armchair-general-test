@@ -26,8 +26,6 @@ public class FurnitureManager : MonoBehaviour
                 Node n = gridReference.GetNodeFromWorldPoint(anchorPoints[j].gameObject.transform.position);
                 n.hasObject = true;
             }
-            
         }
-        
     }
 }

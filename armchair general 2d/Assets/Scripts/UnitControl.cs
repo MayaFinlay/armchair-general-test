@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using Unity.VisualScripting;
 
 public class UnitControl : MonoBehaviour
 {
@@ -13,15 +15,16 @@ public class UnitControl : MonoBehaviour
     private Vector3 worldMousePos;
 
     public bool unitSelected = false;
-    [SerializeField] private bool anyUnitsSelected = false;
+    private bool anyUnitsSelected = false;
 
-    [SerializeField] private Node previousNode;
+    [Header("Movement Functionality")]
+    private Node previousNode;
+    [SerializeField] private int movesMade = 0;
 
     [Header("Unit Stats")]
     public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
-    //[SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
+    [SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
     public bool upgraded = false;
-    
 
 
     void Awake()
@@ -93,7 +96,7 @@ public class UnitControl : MonoBehaviour
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
                 previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
-                if (!targetNode.hasUnit && !targetNode.hasObject)
+                if (!targetNode.hasUnit && !targetNode.hasObject) //CheckMoveValidity(targetNode, previousNode)
                 {
                     previousNode.hasUnit = false;
                     targetNode.hasUnit = true;
@@ -141,4 +144,23 @@ public class UnitControl : MonoBehaviour
         }
         return false;
     }
+
+    /*private bool CheckMoveValidity(Node targetNode, Node previousNode)
+    {
+        if (movesMade < unitSpeed)
+        {
+            Debug.Log(distanceToTravel);
+
+            if (distanceToTravel <= unitSpeed)
+            {
+                movesMade = distanceToTravel;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }*/
 }

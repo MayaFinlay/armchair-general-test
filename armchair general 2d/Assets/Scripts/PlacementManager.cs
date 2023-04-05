@@ -7,6 +7,7 @@ public class PlacementManager : MonoBehaviour
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
     [SerializeField] private ShopManager shopReference;
+    [SerializeField] private SpawnManager spawnReference;
     [SerializeField] private GameObject[] unitPrefabs;
     [SerializeField] private GameObject placementIcon;
     [SerializeField] private Sprite[] unitSprites;
@@ -51,6 +52,7 @@ public class PlacementManager : MonoBehaviour
             placementIcon.GetComponent<SpriteRenderer>().sprite = unitSprites[unitToBePlaced];
             placementIcon.SetActive(true);
             unitSelected = true;
+            spawnReference.ShowSpawnPoints();
         }    
     }
 
@@ -60,6 +62,7 @@ public class PlacementManager : MonoBehaviour
         {
             placementIcon.SetActive(false);
             unitSelected = false;
+            spawnReference.ShowSpawnPoints();
         }    
     }
 
@@ -85,7 +88,7 @@ public class PlacementManager : MonoBehaviour
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
 
-                if (!targetNode.hasUnit && !targetNode.hasObject)
+                if (!targetNode.hasUnit && !targetNode.hasObject && targetNode.playerSpawnable)
                 {
                     Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;

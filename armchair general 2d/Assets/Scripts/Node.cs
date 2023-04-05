@@ -9,6 +9,7 @@ public class Node : IComparable<Node>
     public Vector2 worldPosition;
     public bool hasUnit = false;
     public bool hasObject = false; //Added for Furniture Manager
+    public bool playerSpawnable = false; public bool enemySpawnable = false;
 
     //Pathfinding
     public Node parent;
