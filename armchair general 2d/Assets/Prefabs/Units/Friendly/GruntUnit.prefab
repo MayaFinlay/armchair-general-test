@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5196171481589225105}
   m_Layer: 0
   m_Name: GruntUnit
-  m_TagString: Untagged
+  m_TagString: FriendlyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,4 +118,6 @@ MonoBehaviour:
   shopReference: {fileID: 0}
   placementIcon: {fileID: 0}
   unitSelected: 0
+  anyUnitsSelected: 0
   unitType: 0
+  upgraded: 0

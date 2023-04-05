@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UnitControl : MonoBehaviour
@@ -12,6 +13,7 @@ public class UnitControl : MonoBehaviour
     private Vector3 worldMousePos;
 
     public bool unitSelected = false;
+    [SerializeField] private bool anyUnitsSelected = false;
 
     [SerializeField] private Node previousNode;
 
@@ -19,6 +21,7 @@ public class UnitControl : MonoBehaviour
     public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
     //[SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
     public bool upgraded = false;
+    
 
 
     void Awake()
@@ -37,6 +40,7 @@ public class UnitControl : MonoBehaviour
 
     void OnMouseDown()
     {
+        CheckSelects(); //Checks if any units are selected to avoid double select
         UnitSelected();
         shopReference.unitToUpgrade = this.gameObject;
         shopReference.DisplayWithUpgrade();
@@ -44,7 +48,7 @@ public class UnitControl : MonoBehaviour
 
     private void UnitSelected()
     {
-        if (!unitSelected)
+        if (!unitSelected && !anyUnitsSelected)
         {
             placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
             placementIcon.SetActive(true);
@@ -56,10 +60,28 @@ public class UnitControl : MonoBehaviour
 
     private void UnitDeselected()
     {
-        if (unitSelected)
+        if (unitSelected || anyUnitsSelected)
         {
             placementIcon.SetActive(false);
             unitSelected = false;
+        }
+    }
+
+    private void CheckSelects()
+    {
+        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
+        bool[] selectCheck = null;
+
+        int i = 0;
+        foreach (GameObject unit in allUnits)
+        {
+            selectCheck[i] = allUnits[i].GetComponent<UnitControl>().unitSelected;
+            i++;
+        }
+
+        if (selectCheck.Contains(true))
+        {
+            anyUnitsSelected = true;
         }
     }
 
@@ -71,16 +93,17 @@ public class UnitControl : MonoBehaviour
             if (CursorOverGrid())
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
+                previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
                 if (!targetNode.hasUnit && !targetNode.hasObject)
                 {
-                    previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
+                    previousNode.hasUnit = false;
                     Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;
                     transform.position = gridSquarePos;
-
-                    previousNode.hasUnit = false;
-
+                }
+                else
+                {
                     UnitDeselected();
                 }
             }
