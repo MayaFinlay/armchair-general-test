@@ -16,19 +16,18 @@ public class FurnitureManager : MonoBehaviour
     public void SetFurnitureToGrid()
     {
         furniture = GameObject.FindGameObjectsWithTag("Furniture");
-
-        int i = 0;
-        foreach (GameObject obj in furniture)
+        
+        for(int i = 0; i < furniture.Length; i++)
         {
-            Vector3 furniturePos = furniture[i].transform.position;
-            furniturePos.z = 0f;
-
-            Node setNode = gridReference.GetNodeFromWorldPoint(furniturePos);
-            setNode.hasObject = true;
-            Vector3 setNodePos = setNode.worldPosition;
-            furniture[i].transform.position = setNodePos;
-
-            i++;
+            Transform[] anchorPoints = furniture[i].transform.GetComponentsInChildren<Transform>();
+            
+            for(int j = 0; j < anchorPoints.Length; j++)
+            {
+                Node n = gridReference.GetNodeFromWorldPoint(anchorPoints[j].gameObject.transform.position);
+                n.hasObject = true;
+            }
+            
         }
+        
     }
 }

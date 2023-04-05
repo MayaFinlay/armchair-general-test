@@ -40,10 +40,12 @@ public class UnitControl : MonoBehaviour
 
     void OnMouseDown()
     {
-        CheckSelects(); //Checks if any units are selected to avoid double select
-        UnitSelected();
-        shopReference.unitToUpgrade = this.gameObject;
-        shopReference.DisplayWithUpgrade();
+        if (CheckSelects()) //Checks if any units are selected to avoid double select
+        {
+            UnitSelected();
+            shopReference.unitToUpgrade = this.gameObject;
+            shopReference.DisplayWithUpgrade();
+        }
     }
 
     private void UnitSelected()
@@ -60,29 +62,25 @@ public class UnitControl : MonoBehaviour
 
     private void UnitDeselected()
     {
-        if (unitSelected || anyUnitsSelected)
-        {
-            placementIcon.SetActive(false);
-            unitSelected = false;
-        }
+        placementIcon.SetActive(false);
+        unitSelected = false;
     }
 
-    private void CheckSelects()
+    private bool CheckSelects()
     {
         GameObject[] allUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
-        bool[] selectCheck = null;
-
-        int i = 0;
-        foreach (GameObject unit in allUnits)
+        
+        for(int i = 0; i < allUnits.Length; i++)
         {
-            selectCheck[i] = allUnits[i].GetComponent<UnitControl>().unitSelected;
-            i++;
+            if(allUnits[i].GetComponent<UnitControl>() != null)
+            {
+                if (allUnits[i].GetComponent<UnitControl>().unitSelected)
+                {
+                    return false;
+                }
+            }
         }
-
-        if (selectCheck.Contains(true))
-        {
-            anyUnitsSelected = true;
-        }
+        return true;
     }
 
 
@@ -98,11 +96,11 @@ public class UnitControl : MonoBehaviour
                 if (!targetNode.hasUnit && !targetNode.hasObject)
                 {
                     previousNode.hasUnit = false;
-                    Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;
-                    transform.position = gridSquarePos;
+                    transform.position = targetNode.worldPosition;
+                    UnitDeselected();
                 }
-                else
+                else if(targetNode.hasObject)
                 {
                     UnitDeselected();
                 }
