@@ -72,7 +72,7 @@ public class UnitControl : MonoBehaviour
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
 
-                if (!targetNode.hasUnit)
+                if (!targetNode.hasUnit && !targetNode.hasObject)
                 {
                     previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
                     Vector3 gridSquarePos = targetNode.worldPosition;

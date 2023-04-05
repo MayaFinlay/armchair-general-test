@@ -85,7 +85,7 @@ public class PlacementManager : MonoBehaviour
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
 
-                if (!targetNode.hasUnit)
+                if (!targetNode.hasUnit && !targetNode.hasObject)
                 {
                     Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;
@@ -94,6 +94,7 @@ public class PlacementManager : MonoBehaviour
                 }
             }
             UnitDeselected();
+            shopReference.HideDisplay();
         }
         else if (Input.GetMouseButtonDown(1))
         {

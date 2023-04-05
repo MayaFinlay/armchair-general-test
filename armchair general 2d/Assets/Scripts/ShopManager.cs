@@ -20,6 +20,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private GameObject infoDisplay;
     [SerializeField] private GameObject upgradeDisplay;
     [SerializeField] private Texture[] unitInfo;
+    [SerializeField] private Texture[] upgradedInfo;
     [SerializeField] private Texture[] unitUpgrade;
 
     [Header("Upgrade Functionality")]
@@ -30,7 +31,7 @@ public class ShopManager : MonoBehaviour
     void Update()
     {
         CheckCurrency(); //Displays current currency
-        HideDisplay(); //Hides display when units are not selected
+        //HideDisplay(); //Hides display when units are not selected
     }
 
     public void CheckCurrency()
@@ -49,7 +50,7 @@ public class ShopManager : MonoBehaviour
         }
         else
         {
-            infoDisplay.SetActive(false);
+            HideDisplay();
         }
     }
 
@@ -64,18 +65,16 @@ public class ShopManager : MonoBehaviour
         }
         else
         {
-            infoDisplay.SetActive(false);
+            infoDisplay.SetActive(true);
             upgradeDisplay.SetActive(false);
+            infoDisplay.GetComponent<RawImage>().texture = upgradedInfo[unitType];
         }
     }
 
     public void HideDisplay()
     {
-        if (!placementReference.unitSelected && unitUpgraded)
-        {
-            infoDisplay.SetActive(false);
-            upgradeDisplay.SetActive(false);
-        }
+        infoDisplay.SetActive(false);
+        upgradeDisplay.SetActive(false);
     }
 
 
@@ -84,6 +83,8 @@ public class ShopManager : MonoBehaviour
         if (!unitToUpgrade.GetComponent<UnitControl>().upgraded && playerCurrency >= upgradePrices[unitType])
         {
             playerCurrency = playerCurrency - upgradePrices[unitType];
+            unitUpgraded = true;
+            DisplayWithUpgrade();
             Instantiate(upgradePrefabs[unitType], unitToUpgrade.transform.position, Quaternion.identity);
             Destroy(unitToUpgrade);
         }

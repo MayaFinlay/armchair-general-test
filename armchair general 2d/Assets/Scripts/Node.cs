@@ -8,6 +8,7 @@ public class Node : IComparable<Node>
     public bool walkable;
     public Vector2 worldPosition;
     public bool hasUnit = false;
+    public bool hasObject = false; //Added for Furniture Manager
 
     //Pathfinding
     public Node parent;
