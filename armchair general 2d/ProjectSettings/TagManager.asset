@@ -8,6 +8,7 @@ TagManager:
   - FriendlyUnit
   - PlayerSpawn
   - EnemySpawn
+  - EnemyUnit
   layers:
   - Default
   - TransparentFX

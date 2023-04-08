@@ -19,19 +19,21 @@ public class UnitControl : MonoBehaviour
 
     [Header("Movement Functionality")]
     private Node previousNode;
-    [SerializeField] private int movesMade = 0;
+    public bool moved = false;
 
     [Header("Unit Stats")]
     public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
     [SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
     public bool upgraded = false;
 
+    [SerializeField] private GameObject[] northAnchors, eastAnchors, westAnchors, southAnchors;
+
 
     void Awake()
     {
         gridReference = GameObject.Find("GridGenerator").GetComponent<GridGen>();
         shopReference = GameObject.Find("ShopManager").GetComponent<ShopManager>();
-        placementIcon = GameObject.Find("PlacementManager").transform.Find("PlacementCursorIcon").gameObject; 
+        placementIcon = GameObject.Find("PlacementManager").transform.Find("PlacementCursorIcon").gameObject;
     }
 
     void Update()
@@ -55,11 +57,11 @@ public class UnitControl : MonoBehaviour
     {
         if (!unitSelected && !anyUnitsSelected)
         {
-            placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-            placementIcon.SetActive(true);
             unitSelected = true;
             shopReference.unitUpgraded = upgraded;
             shopReference.unitType = unitType;
+
+            CheckMoveValidity();
         }
     }
 
@@ -67,6 +69,8 @@ public class UnitControl : MonoBehaviour
     {
         placementIcon.SetActive(false);
         unitSelected = false;
+
+        CheckMoveValidity();
     }
 
     private bool CheckSelects()
@@ -89,22 +93,24 @@ public class UnitControl : MonoBehaviour
 
     private void UnitMovement()
     {
-        if (unitSelected && Input.GetMouseButtonDown(0))
+        if (unitSelected && Input.GetMouseButtonDown(0) && !moved)
         {
+            placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+            placementIcon.SetActive(true);
+
             if (CursorOverGrid())
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
                 previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
-                if (!targetNode.hasUnit && !targetNode.hasObject) //CheckMoveValidity(targetNode, previousNode)
+                Debug.Log(targetNode.withinRange);
+
+                if (!targetNode.hasObject && !targetNode.hasUnit && targetNode.withinRange)
                 {
+                    moved = true;
                     previousNode.hasUnit = false;
                     targetNode.hasUnit = true;
                     transform.position = targetNode.worldPosition;
-                    UnitDeselected();
-                }
-                else if(targetNode.hasObject)
-                {
                     UnitDeselected();
                 }
             }
@@ -145,22 +151,41 @@ public class UnitControl : MonoBehaviour
         return false;
     }
 
-    /*private bool CheckMoveValidity(Node targetNode, Node previousNode)
+    private void CheckMoveValidity()
     {
-        if (movesMade < unitSpeed)
+        GameObject[] allMoveAnchors = northAnchors.Concat(eastAnchors).Concat(southAnchors).Concat(westAnchors).ToArray();
+        
+        if (unitSelected && !moved)
         {
-            Debug.Log(distanceToTravel);
-
-            if (distanceToTravel <= unitSpeed)
+            for (int i = 0; i < allMoveAnchors.Length; i++)
             {
-                movesMade = distanceToTravel;
-                return true;
-            }
-            else
-            {
-                return false;
+                Node n = gridReference.GetNodeFromWorldPoint(allMoveAnchors[i].transform.position);
+                if (!n.hasObject && !n.hasUnit && n != null)
+                {
+                    n.withinRange = true;
+                    allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = true;
+                }
+                else
+                {
+                    n.withinRange = false;
+                    allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
         }
-        return false;
-    }*/
+        else
+        {
+            for (int i = 0; i < allMoveAnchors.Length; i++)
+            {
+                allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = false;
+            }
+
+            foreach (Node n in gridReference.grid)
+            {
+                if (n.withinRange)
+                {
+                    n.withinRange = false;
+                }
+            }
+        }
+    }
 }

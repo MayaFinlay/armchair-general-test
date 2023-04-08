@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyGruntUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 1658567158731565865, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_TagString
+      value: EnemyUnit
+      objectReference: {fileID: 0}
     - target: {fileID: 6115836541213303551, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_Sprite
       value: 

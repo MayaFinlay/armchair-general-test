@@ -15,6 +15,22 @@ PrefabInstance:
       propertyPath: unitSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: eastAnchors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: westAnchors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: northAnchors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: southAnchors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1658567158731565865, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_Name
       value: SniperUnit

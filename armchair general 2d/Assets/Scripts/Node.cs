@@ -5,11 +5,12 @@ public class Node : IComparable<Node>
 {
     //Node Attributes
     public int x, y;
-    public bool walkable;
+    public bool walkable ;
     public Vector2 worldPosition;
     public bool hasUnit = false;
     public bool hasObject = false; //Added for Furniture Manager
     public bool playerSpawnable = false; public bool enemySpawnable = false;
+    public bool withinRange = false;
 
     //Pathfinding
     public Node parent;

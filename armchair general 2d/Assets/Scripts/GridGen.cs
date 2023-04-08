@@ -72,6 +72,8 @@ public class GridGen : MonoBehaviour
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 if (n.hasObject) Gizmos.color = Color.blue;
+                if (n.hasUnit) Gizmos.color = Color.yellow;
+                if (n.withinRange) Gizmos.color = Color.cyan;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
