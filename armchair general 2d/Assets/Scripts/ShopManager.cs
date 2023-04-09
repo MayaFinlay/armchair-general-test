@@ -25,7 +25,7 @@ public class ShopManager : MonoBehaviour
 
     [Header("Upgrade Functionality")]
     [HideInInspector] public bool unitUpgraded = false;
-    [HideInInspector] public GameObject unitToUpgrade;
+    [HideInInspector] public GameObject unitSelected;
     [SerializeField] private GameObject[] upgradePrefabs;
 
     void Update()
@@ -44,9 +44,24 @@ public class ShopManager : MonoBehaviour
         if (placementReference.unitSelected)
         {
             infoDisplay.SetActive(true);
-            upgradeDisplay.SetActive(false);
             unitType = placementReference.unitToBePlaced;
             infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
+        }
+        else if(unitSelected.GetComponent<UnitControl>().unitSelected)
+        {
+            infoDisplay.SetActive(true);
+            unitType = unitSelected.GetComponent<UnitControl>().unitType;
+            infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
+
+            if (unitSelected.GetComponent<UnitControl>().unitSelected && !unitUpgraded && !unitSelected.GetComponent<UnitControl>().moved)
+            {
+                upgradeDisplay.SetActive(true);
+                upgradeDisplay.GetComponent<RawImage>().texture = unitUpgrade[unitType];
+            }
+            else
+            {
+                upgradeDisplay.SetActive(false);
+            }
         }
         else
         {
@@ -54,7 +69,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    public void DisplayWithUpgrade()
+    /*public void DisplayWithUpgrade()
     {
         if (!unitUpgraded)
         {
@@ -69,7 +84,7 @@ public class ShopManager : MonoBehaviour
             upgradeDisplay.SetActive(false);
             infoDisplay.GetComponent<RawImage>().texture = upgradedInfo[unitType];
         }
-    }
+    }*/
 
     public void HideDisplay()
     {
@@ -80,13 +95,13 @@ public class ShopManager : MonoBehaviour
 
     public void UpgradeUnit()
     {
-        if (!unitToUpgrade.GetComponent<UnitControl>().upgraded && playerCurrency >= upgradePrices[unitType])
+        if (!unitSelected.GetComponent<UnitControl>().upgraded && playerCurrency >= upgradePrices[unitType])
         {
             playerCurrency = playerCurrency - upgradePrices[unitType];
             unitUpgraded = true;
-            DisplayWithUpgrade();
-            Instantiate(upgradePrefabs[unitType], unitToUpgrade.transform.position, Quaternion.identity);
-            Destroy(unitToUpgrade);
+            DisplayInfo();
+            Instantiate(upgradePrefabs[unitType], unitSelected.transform.position, Quaternion.identity);
+            Destroy(unitSelected);
         }
     }
 

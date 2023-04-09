@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private ShopManager shopReference;
     [SerializeField] private PlacementManager placementReference;
     [SerializeField] private GameObject[] placementButtons;
+    [SerializeField] private GameObject placementIcon;
     public bool playerTurn = true, enemyTurn = false;
     [SerializeField] private GameObject[] activeUnits;
 
@@ -30,13 +31,15 @@ public class TurnManager : MonoBehaviour
     {
         if (playerTurn)
         {
-            shopReference.enabled = false;
-            placementReference.enabled = false;
+            shopReference.enabled = true;
+            placementReference.enabled = true;
+            placementIcon.SetActive(true);
 
             for (int i = 0; i < allies.Length; i++)
             {
                 allies[i].GetComponent<UnitControl>().enabled = true;
                 allies[i].GetComponent<UnitControl>().moved = false;
+                allies[i].GetComponent<UnitControl>().unitSelected = false;
             }
             for (int j = 0; j < placementButtons.Length; j++)
             {
@@ -47,6 +50,7 @@ public class TurnManager : MonoBehaviour
         {
             shopReference.enabled = false;
             placementReference.enabled = false;
+            placementIcon.SetActive(false);
 
             for (int i = 0; i < allies.Length; i++)
             {

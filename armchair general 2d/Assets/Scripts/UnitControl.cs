@@ -48,8 +48,8 @@ public class UnitControl : MonoBehaviour
         if (CheckSelects()) //Checks if any units are selected to avoid double select
         {
             UnitSelected();
-            shopReference.unitToUpgrade = this.gameObject;
-            shopReference.DisplayWithUpgrade();
+            shopReference.unitSelected = this.gameObject;
+            shopReference.DisplayInfo();
         }
     }
 
@@ -57,20 +57,28 @@ public class UnitControl : MonoBehaviour
     {
         if (!unitSelected && !anyUnitsSelected)
         {
+            placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+            placementIcon.GetComponent<SpriteRenderer>().enabled = true;
             unitSelected = true;
             shopReference.unitUpgraded = upgraded;
             shopReference.unitType = unitType;
-
             CheckMoveValidity();
         }
     }
 
     private void UnitDeselected()
     {
-        placementIcon.SetActive(false);
-        unitSelected = false;
+        if (unitSelected)
+        {
+            placementIcon.GetComponent<SpriteRenderer>().enabled = false;
+            unitSelected = false;
+            CheckMoveValidity();
 
-        CheckMoveValidity();
+            if (moved)
+            {
+                shopReference.HideDisplay();
+            }
+        }
     }
 
     private bool CheckSelects()
@@ -95,9 +103,6 @@ public class UnitControl : MonoBehaviour
     {
         if (unitSelected && Input.GetMouseButtonDown(0) && !moved)
         {
-            placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-            placementIcon.SetActive(true);
-
             if (CursorOverGrid())
             {
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
@@ -111,6 +116,7 @@ public class UnitControl : MonoBehaviour
                     previousNode.hasUnit = false;
                     targetNode.hasUnit = true;
                     transform.position = targetNode.worldPosition;
+
                     UnitDeselected();
                 }
             }
@@ -160,7 +166,7 @@ public class UnitControl : MonoBehaviour
             for (int i = 0; i < allMoveAnchors.Length; i++)
             {
                 Node n = gridReference.GetNodeFromWorldPoint(allMoveAnchors[i].transform.position);
-                if (!n.hasObject && !n.hasUnit && n != null)
+                if (!n.hasObject && !n.hasUnit && MoveWithinGrid(allMoveAnchors[i].transform.position))
                 {
                     n.withinRange = true;
                     allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = true;
@@ -188,4 +194,17 @@ public class UnitControl : MonoBehaviour
             }
         }
     }
+
+    private bool MoveWithinGrid(Vector3 moveNodePos)
+    {
+        if (moveNodePos.x < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.x + gridReference.nodeRadius && moveNodePos.y < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.y + gridReference.nodeRadius)
+        {
+            if (moveNodePos.x > gridReference.grid[0, 0].worldPosition.x - gridReference.nodeRadius && moveNodePos.y > gridReference.grid[0, 0].worldPosition.y - gridReference.nodeRadius)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

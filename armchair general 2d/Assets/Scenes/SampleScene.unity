@@ -745,7 +745,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 82f87661bb170dc40b4c188a6d6ad83b, type: 3}
   - {fileID: 2800000, guid: 9ffed8c781c2ac849b5fc6bf3487aae2, type: 3}
   unitUpgraded: 0
-  unitToUpgrade: {fileID: 0}
+  unitSelected: {fileID: 0}
   upgradePrefabs:
   - {fileID: 7646843419228621491, guid: 8646336e2d3627f448b8080926c3ca05, type: 3}
   - {fileID: 8265373516542737955, guid: 5896e6364bee8dc43aca1dc1bdcc22e8, type: 3}
@@ -885,7 +885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &524124640
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1549,15 +1549,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3386244884817094402, guid: 91f8144580d6cab49aa81b44647b1fe8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.24
+      value: 2.9644804
       objectReference: {fileID: 0}
     - target: {fileID: 3386244884817094402, guid: 91f8144580d6cab49aa81b44647b1fe8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.42
+      value: 2.9668996
       objectReference: {fileID: 0}
     - target: {fileID: 3386244884817094402, guid: 91f8144580d6cab49aa81b44647b1fe8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3386244884817094402, guid: 91f8144580d6cab49aa81b44647b1fe8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2399,7 +2399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2142046080
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class PlacementManager : MonoBehaviour
     private Vector3 rawMousePos;
     private Vector3 worldMousePos;
 
-    [HideInInspector] public bool unitSelected = false;
+    public bool unitSelected = false;
     [HideInInspector] public int unitToBePlaced; //Grunt = 0, Sniper = 1, Tank = 2
 
     public void PlaceGrunt()
@@ -50,7 +50,7 @@ public class PlacementManager : MonoBehaviour
         if (!unitSelected)
         {
             placementIcon.GetComponent<SpriteRenderer>().sprite = unitSprites[unitToBePlaced];
-            placementIcon.SetActive(true);
+            placementIcon.GetComponent<SpriteRenderer>().enabled = true;
             unitSelected = true;
             spawnReference.ShowSpawnPoints();
         }    
@@ -60,7 +60,7 @@ public class PlacementManager : MonoBehaviour
     {
         if (unitSelected)
         {
-            placementIcon.SetActive(false);
+            placementIcon.GetComponent<SpriteRenderer>().enabled = false;
             unitSelected = false;
             spawnReference.ShowSpawnPoints();
         }    
