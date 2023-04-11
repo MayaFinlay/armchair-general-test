@@ -20,13 +20,15 @@ public class UnitControl : MonoBehaviour
     [Header("Movement Functionality")]
     private Node previousNode;
     public bool moved = false;
+    [SerializeField] private GameObject[] northAnchors, eastAnchors, westAnchors, southAnchors;
+
+    [Header("Attack Functionality")]
+    public bool attacked = false;
 
     [Header("Unit Stats")]
     public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
-    [SerializeField] private int unitSpeed; //Grunt = 3, Sniper = 1, Tank = 2; Set in Prefab
+    [SerializeField] private int unitAttackRange; // Set in Prefab;
     public bool upgraded = false;
-
-    [SerializeField] private GameObject[] northAnchors, eastAnchors, westAnchors, southAnchors;
 
 
     void Awake()
@@ -43,6 +45,7 @@ public class UnitControl : MonoBehaviour
         PlacementIndicatorFollow(); //Indicator follow cursor
     }
 
+    //Selecting
     void OnMouseDown()
     {
         if (CheckSelects()) //Checks if any units are selected to avoid double select
@@ -98,7 +101,33 @@ public class UnitControl : MonoBehaviour
         return true;
     }
 
+    private void CursorPosition()
+    {
+        rawMousePos = Input.mousePosition;
+        worldMousePos = Camera.main.ScreenToWorldPoint(rawMousePos);
+        worldMousePos.z = 0f;
+    }
 
+    private void PlacementIndicatorFollow()
+    {
+        if (unitSelected)
+            placementIcon.transform.position = worldMousePos;
+    }
+
+    private bool CursorOverGrid()    //Checks to see if cursor is in bounds of grid
+    {
+        if (worldMousePos.x < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.x + gridReference.nodeRadius && worldMousePos.y < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.y + gridReference.nodeRadius)
+        {
+            if (worldMousePos.x > gridReference.grid[0, 0].worldPosition.x - gridReference.nodeRadius && worldMousePos.y > gridReference.grid[0, 0].worldPosition.y - gridReference.nodeRadius)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //Movement
     private void UnitMovement()
     {
         if (unitSelected && Input.GetMouseButtonDown(0) && !moved)
@@ -108,9 +137,7 @@ public class UnitControl : MonoBehaviour
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
                 previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
-                Debug.Log(targetNode.withinRange);
-
-                if (!targetNode.hasObject && !targetNode.hasUnit && targetNode.withinRange)
+                if (!targetNode.hasObject && !targetNode.hasUnit && targetNode.withinMoveRange)
                 {
                     moved = true;
                     previousNode.hasUnit = false;
@@ -131,65 +158,58 @@ public class UnitControl : MonoBehaviour
         }
     }
 
-    private void CursorPosition()
-    {
-        rawMousePos = Input.mousePosition;
-        worldMousePos = Camera.main.ScreenToWorldPoint(rawMousePos);
-        worldMousePos.z = 0f;
-    }
-
-    private void PlacementIndicatorFollow()
-    {
-        if (unitSelected)
-            placementIcon.transform.position = worldMousePos;
-    }
-
-    //Checks to see if cursor is in bounds of grid
-    private bool CursorOverGrid()
-    {
-        if (worldMousePos.x < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.x + gridReference.nodeRadius && worldMousePos.y < gridReference.grid[gridReference.gridSizeX - 1, gridReference.gridSizeY - 1].worldPosition.y + gridReference.nodeRadius)
-        {
-            if (worldMousePos.x > gridReference.grid[0, 0].worldPosition.x - gridReference.nodeRadius && worldMousePos.y > gridReference.grid[0, 0].worldPosition.y - gridReference.nodeRadius)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void CheckMoveValidity()
     {
-        GameObject[] allMoveAnchors = northAnchors.Concat(eastAnchors).Concat(southAnchors).Concat(westAnchors).ToArray();
+        GameObject[][] allMoveAnchors = new GameObject[][] { northAnchors, eastAnchors, southAnchors, westAnchors };
         
         if (unitSelected && !moved)
         {
-            for (int i = 0; i < allMoveAnchors.Length; i++)
+            foreach (GameObject[] anchorArray in allMoveAnchors)
             {
-                Node n = gridReference.GetNodeFromWorldPoint(allMoveAnchors[i].transform.position);
-                if (!n.hasObject && !n.hasUnit && MoveWithinGrid(allMoveAnchors[i].transform.position))
+                GameObject[] currentArray = anchorArray;
+
+                for (int i = 0; i < currentArray.Length; i++)
                 {
-                    n.withinRange = true;
-                    allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = true;
-                }
-                else
-                {
-                    n.withinRange = false;
-                    allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = false;
+                    Node n = gridReference.GetNodeFromWorldPoint(currentArray[i].transform.position);
+                    if (!n.hasObject && !n.hasUnit && MoveWithinGrid(currentArray[i].transform.position))
+                    {
+                        if (i < 1)
+                        {
+                            n.withinMoveRange = true;
+                            currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
+                        }
+                        else if (currentArray[i - 1].GetComponent<SpriteRenderer>().enabled)
+                        {
+                            n.withinMoveRange = true;
+                            currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        n.withinMoveRange = false;
+                        currentArray[i].GetComponent<SpriteRenderer>().enabled = false;
+                    }
                 }
             }
+
         }
         else
         {
-            for (int i = 0; i < allMoveAnchors.Length; i++)
+            foreach (GameObject[] anchorArray in allMoveAnchors)
             {
-                allMoveAnchors[i].GetComponent<SpriteRenderer>().enabled = false;
+                GameObject[] currentArray = anchorArray;
+
+                for (int i = 0; i < currentArray.Length; i++)
+                {
+                    currentArray[i].GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
 
             foreach (Node n in gridReference.grid)
             {
-                if (n.withinRange)
+                if (n.withinMoveRange)
                 {
-                    n.withinRange = false;
+                    n.withinMoveRange = false;
                 }
             }
         }
@@ -207,4 +227,30 @@ public class UnitControl : MonoBehaviour
         return false;
     }
 
+
+    //Attacking
+    private void UnitAttack()
+    {
+        if (unitSelected && Input.GetMouseButtonDown(0) && !attacked)
+        {
+            if (CursorOverGrid())
+            {
+                Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
+                Node currentNode = gridReference.GetNodeFromWorldPoint(transform.position);
+
+                if (targetNode.hasUnit && targetNode.withinAttackRange)
+                {
+                    attacked = true;
+                }
+            }
+            else
+            {
+                UnitDeselected();
+            }
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            UnitDeselected();
+        }
+    }
 }

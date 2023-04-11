@@ -356,6 +356,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: unitAttackRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: eastAnchors.Array.size
       value: 4
       objectReference: {fileID: 0}

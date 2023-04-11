@@ -10,7 +10,8 @@ public class Node : IComparable<Node>
     public bool hasUnit = false;
     public bool hasObject = false; //Added for Furniture Manager
     public bool playerSpawnable = false; public bool enemySpawnable = false;
-    public bool withinRange = false;
+    public bool withinMoveRange = false;
+    public bool withinAttackRange = false;
 
     //Pathfinding
     public Node parent;

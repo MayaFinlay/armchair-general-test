@@ -153,10 +153,7 @@ MonoBehaviour:
   shopReference: {fileID: 0}
   placementIcon: {fileID: 0}
   unitSelected: 0
-  movesMade: 0
-  unitType: 0
-  unitSpeed: 3
-  upgraded: 0
+  moved: 0
   northAnchors:
   - {fileID: 5977712615555438820}
   - {fileID: 5846481796981528655}
@@ -173,6 +170,10 @@ MonoBehaviour:
   - {fileID: 8535629939279301682}
   - {fileID: 2062270378690295622}
   - {fileID: 2523977874702660768}
+  attacked: 0
+  unitType: 0
+  unitAttackRange: 2
+  upgraded: 0
 --- !u!1 &1741076500161295011
 GameObject:
   m_ObjectHideFlags: 0
