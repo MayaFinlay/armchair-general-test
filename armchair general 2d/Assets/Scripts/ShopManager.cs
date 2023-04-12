@@ -50,7 +50,7 @@ public class ShopManager : MonoBehaviour
         else if(unitSelected.GetComponent<UnitControl>().unitSelected)
         {
             infoDisplay.SetActive(true);
-            unitType = unitSelected.GetComponent<UnitControl>().unitType;
+            unitType = unitSelected.GetComponent<UnitStats>().unitType;
             infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
 
             if (unitSelected.GetComponent<UnitControl>().unitSelected && !unitUpgraded && !unitSelected.GetComponent<UnitControl>().moved)
@@ -95,7 +95,7 @@ public class ShopManager : MonoBehaviour
 
     public void UpgradeUnit()
     {
-        if (!unitSelected.GetComponent<UnitControl>().upgraded && playerCurrency >= upgradePrices[unitType])
+        if (!unitSelected.GetComponent<UnitStats>().upgraded && playerCurrency >= upgradePrices[unitType])
         {
             playerCurrency = playerCurrency - upgradePrices[unitType];
             unitUpgraded = true;

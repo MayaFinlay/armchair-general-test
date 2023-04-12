@@ -4,12 +4,16 @@ using System.Linq;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using Unity.Burst.CompilerServices;
+using UnityEngine.XR;
 
 public class UnitControl : MonoBehaviour
 {
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
     [SerializeField] private ShopManager shopReference;
+    [SerializeField] private TurnManager turnReference;
+    [SerializeField] private UnitStats unitStats;
     [SerializeField] private GameObject placementIcon;
     private Vector3 rawMousePos;
     private Vector3 worldMousePos;
@@ -18,17 +22,13 @@ public class UnitControl : MonoBehaviour
     private bool anyUnitsSelected = false;
 
     [Header("Movement Functionality")]
-    private Node previousNode;
     public bool moved = false;
+    private Node previousNode;
     [SerializeField] private GameObject[] northAnchors, eastAnchors, westAnchors, southAnchors;
 
     [Header("Attack Functionality")]
     public bool attacked = false;
-
-    [Header("Unit Stats")]
-    public int unitType; //Grunt = 0, Sniper = 1, Tank = 2 ; Set in Prefab
-    [SerializeField] private int unitAttackRange; // Set in Prefab;
-    public bool upgraded = false;
+    [SerializeField] private LineRenderer aimLine;
 
 
     void Awake()
@@ -42,7 +42,9 @@ public class UnitControl : MonoBehaviour
     {
         CursorPosition(); //Find cursor position
         UnitMovement(); //Unit movement functionality
+        UnitAttack(); //Unit movement functionality
         PlacementIndicatorFollow(); //Indicator follow cursor
+        AimVisibility();
     }
 
     //Selecting
@@ -63,8 +65,8 @@ public class UnitControl : MonoBehaviour
             placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
             placementIcon.GetComponent<SpriteRenderer>().enabled = true;
             unitSelected = true;
-            shopReference.unitUpgraded = upgraded;
-            shopReference.unitType = unitType;
+            shopReference.unitUpgraded = unitStats.upgraded;
+            shopReference.unitType = unitStats.unitType;
             CheckMoveValidity();
         }
     }
@@ -238,10 +240,27 @@ public class UnitControl : MonoBehaviour
                 Node targetNode = gridReference.GetNodeFromWorldPoint(worldMousePos);
                 Node currentNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
-                if (targetNode.hasUnit && targetNode.withinAttackRange)
+                float dirX = targetNode.x - currentNode.x;
+                float dirY = targetNode.y - currentNode.y;
+
+                Vector3 direction = new Vector3(dirX, dirY);
+                float distance = direction.magnitude;
+
+                if (distance <= unitStats.attackRange)
                 {
-                    attacked = true;
+                    RaycastHit2D hit = Physics2D.Linecast(currentNode.worldPosition, targetNode.worldPosition);
+                    if (hit.collider != null)
+                    {
+                        attacked = true;
+
+                        if (hit.collider.CompareTag("EnemyUnit"))
+                        {
+                            hit.collider.GetComponent<UnitStats>().health = hit.collider.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                        }
+                        UnitDeselected();
+                    }
                 }
+
             }
             else
             {
@@ -251,6 +270,21 @@ public class UnitControl : MonoBehaviour
         else if (Input.GetMouseButtonDown(1))
         {
             UnitDeselected();
+        }
+    }
+
+    private void AimVisibility()
+    {
+        if (unitSelected && !attacked)
+        {
+            aimLine.gameObject.SetActive(true);
+            aimLine.positionCount = 2;
+            aimLine.SetPosition(0, transform.position);
+            aimLine.SetPosition(1, worldMousePos);
+        }
+        else
+        {
+            aimLine.gameObject.SetActive(false);
         }
     }
 }

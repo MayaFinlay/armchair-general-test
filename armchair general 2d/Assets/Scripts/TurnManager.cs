@@ -11,51 +11,76 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private PlacementManager placementReference;
     [SerializeField] private GameObject[] placementButtons;
     [SerializeField] private GameObject placementIcon;
+    [SerializeField] private GameObject endButton;
+
+    [Header("Turn Change")]
+    [SerializeField] private int turnReward = 65;
     public bool playerTurn = true, enemyTurn = false;
-    [SerializeField] private GameObject[] activeUnits;
+    [SerializeField] private Texture[] endButtonTex; //Player Turn = 0, Enemy Turn = 1
+
+    [Header("Active Units")]
+    [SerializeField] private GameObject[] friendlyUnits;
+    [SerializeField] private GameObject[] enemyUnits;
+    private GameObject[] activeUnits;
+
+    [Header("Phase Management")]
+    public int currentPhase = 0; //Buy Phase = 0, Move Phase = 1, Attack Phase = 2
+
+    public void Update()
+    {
+        friendlyUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
+        enemyUnits = GameObject.FindGameObjectsWithTag("EnemyUnit");
+    }
 
     public void EndTurn()
     {
-        GameObject[] friendlyUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
-        GameObject[] enemyUnits = GameObject.FindGameObjectsWithTag("EnemyUnit");
-
         activeUnits = friendlyUnits.Concat(enemyUnits).ToArray();
 
         playerTurn = !playerTurn;
         enemyTurn = !enemyTurn;
 
-        TurnStartup(friendlyUnits, enemyUnits);
+        TurnStartup();
     }
 
-    private void TurnStartup(GameObject[] allies, GameObject[] enemies)
+    private void TurnStartup()
     {
         if (playerTurn)
         {
+            endButton.GetComponent<Button>().enabled = true;
+            endButton.GetComponent<RawImage>().texture = endButtonTex[0];
+
             shopReference.enabled = true;
             placementReference.enabled = true;
             placementIcon.SetActive(true);
 
-            for (int i = 0; i < allies.Length; i++)
+            shopReference.playerCurrency = shopReference.playerCurrency + turnReward;
+
+            for (int i = 0; i < friendlyUnits.Length; i++)
             {
-                allies[i].GetComponent<UnitControl>().enabled = true;
-                allies[i].GetComponent<UnitControl>().moved = false;
-                allies[i].GetComponent<UnitControl>().unitSelected = false;
+                friendlyUnits[i].GetComponent<UnitControl>().moved = false;
+                friendlyUnits[i].GetComponent<UnitControl>().unitSelected = false;
             }
             for (int j = 0; j < placementButtons.Length; j++)
             {
                 placementButtons[j].GetComponent<Button>().enabled = true;
             }
+
+            currentPhase = 0;
+            //ChangePhase();
         }
         else if (enemyTurn)
         {
+            endButton.GetComponent<Button>().enabled = false;
+            endButton.GetComponent<RawImage>().texture = endButtonTex[1];
+
             shopReference.enabled = false;
             placementReference.enabled = false;
             placementIcon.SetActive(false);
 
-            for (int i = 0; i < allies.Length; i++)
+            for (int i = 0; i < friendlyUnits.Length; i++)
             {
-                allies[i].GetComponent<UnitControl>().enabled = false;
-                allies[i].GetComponent<UnitControl>().unitSelected = false;
+                friendlyUnits[i].GetComponent<UnitControl>().enabled = false;
+                friendlyUnits[i].GetComponent<UnitControl>().unitSelected = false;
             }
             for (int j = 0; j < placementButtons.Length; j++)
             {
@@ -63,4 +88,50 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
+
+    private void ChangePhase()
+    {
+        switch (currentPhase)
+        {
+            case 0:
+                shopReference.enabled = true;
+                placementReference.enabled = true;
+                placementIcon.SetActive(true);
+                for (int j = 0; j < placementButtons.Length; j++)
+                {
+                    placementButtons[j].GetComponent<Button>().enabled = true;
+                }
+
+                for (int i = 0; i < friendlyUnits.Length; i++)
+                {
+                    friendlyUnits[i].GetComponent<UnitControl>().enabled = false;
+                }
+                break;
+            case 1:
+                shopReference.enabled = false;
+                placementReference.enabled = false;
+                placementIcon.SetActive(true);
+
+
+                for (int i = 0; i < friendlyUnits.Length; i++)
+                {
+                    friendlyUnits[i].GetComponent<UnitControl>().enabled = true;
+                }
+                break;
+            case 2:
+                shopReference.enabled = false;
+                placementReference.enabled = false;
+                placementIcon.SetActive(true);
+
+
+                for (int i = 0; i < friendlyUnits.Length; i++)
+                {
+                    friendlyUnits[i].GetComponent<UnitControl>().enabled = true;
+                }
+                break;
+
+        }
+
+    }
+
 }

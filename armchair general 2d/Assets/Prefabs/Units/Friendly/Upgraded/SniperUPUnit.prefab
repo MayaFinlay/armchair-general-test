@@ -59,6 +59,22 @@ PrefabInstance:
       propertyPath: southAnchors.Array.data[1]
       value: 
       objectReference: {fileID: 8732000957489259084}
+    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: health
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: upgraded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: attackRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: attackDamage
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6775068420526927615, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_FlipX
       value: 0
