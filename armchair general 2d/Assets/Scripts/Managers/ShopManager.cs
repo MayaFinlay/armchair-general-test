@@ -100,7 +100,8 @@ public class ShopManager : MonoBehaviour
             playerCurrency = playerCurrency - upgradePrices[unitType];
             unitUpgraded = true;
             DisplayInfo();
-            Instantiate(upgradePrefabs[unitType], unitSelected.transform.position, Quaternion.identity);
+            GameObject unit = Instantiate(upgradePrefabs[unitType], unitSelected.transform.position, Quaternion.identity);
+            StartCoroutine(unit.GetComponent<UnitStats>().GlitchEffect());
             Destroy(unitSelected);
         }
     }

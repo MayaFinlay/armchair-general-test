@@ -6,13 +6,13 @@ using System;
 using Unity.VisualScripting;
 using Unity.Burst.CompilerServices;
 using UnityEngine.XR;
+using static UnityEngine.UI.CanvasScaler;
 
 public class UnitControl : MonoBehaviour
 {
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
     [SerializeField] private ShopManager shopReference;
-    [SerializeField] private TurnManager turnReference;
     [SerializeField] private UnitStats unitStats;
     [SerializeField] private GameObject placementIcon;
     private Vector3 rawMousePos;
@@ -29,6 +29,9 @@ public class UnitControl : MonoBehaviour
     [Header("Attack Functionality")]
     public bool attacked = false;
     [SerializeField] private LineRenderer aimLine;
+    [SerializeField] private GameObject weaponEffect;
+
+    private int unitPhase = 0;
 
 
     void Awake()
@@ -44,6 +47,7 @@ public class UnitControl : MonoBehaviour
         UnitMovement(); //Unit movement functionality
         UnitAttack(); //Unit movement functionality
         PlacementIndicatorFollow(); //Indicator follow cursor
+        PhaseCheck();
         AimVisibility();
     }
 
@@ -78,11 +82,6 @@ public class UnitControl : MonoBehaviour
             placementIcon.GetComponent<SpriteRenderer>().enabled = false;
             unitSelected = false;
             CheckMoveValidity();
-
-            if (moved)
-            {
-                shopReference.HideDisplay();
-            }
         }
     }
 
@@ -132,7 +131,7 @@ public class UnitControl : MonoBehaviour
     //Movement
     private void UnitMovement()
     {
-        if (unitSelected && Input.GetMouseButtonDown(0) && !moved)
+        if (unitSelected && Input.GetMouseButtonDown(0) && unitPhase == 0)
         {
             if (CursorOverGrid())
             {
@@ -164,7 +163,7 @@ public class UnitControl : MonoBehaviour
     {
         GameObject[][] allMoveAnchors = new GameObject[][] { northAnchors, eastAnchors, southAnchors, westAnchors };
         
-        if (unitSelected && !moved)
+        if (unitSelected && unitPhase == 0)
         {
             foreach (GameObject[] anchorArray in allMoveAnchors)
             {
@@ -178,17 +177,20 @@ public class UnitControl : MonoBehaviour
                         if (i < 1)
                         {
                             n.withinMoveRange = true;
+                            currentArray[i].tag = "Walkable";
                             currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
                         }
-                        else if (currentArray[i - 1].GetComponent<SpriteRenderer>().enabled)
+                        else if (currentArray[i - 1].CompareTag("Walkable")) // needs reworked
                         {
                             n.withinMoveRange = true;
+                            currentArray[i].tag = "Walkable";
                             currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
                         }
                     }
                     else
                     {
                         n.withinMoveRange = false;
+                        currentArray[i].tag = "Untagged";
                         currentArray[i].GetComponent<SpriteRenderer>().enabled = false;
                     }
                 }
@@ -233,7 +235,7 @@ public class UnitControl : MonoBehaviour
     //Attacking
     private void UnitAttack()
     {
-        if (unitSelected && Input.GetMouseButtonDown(0) && !attacked)
+        if (unitSelected && Input.GetMouseButtonDown(0) && unitPhase == 1)
         {
             if (CursorOverGrid())
             {
@@ -252,10 +254,12 @@ public class UnitControl : MonoBehaviour
                     if (hit.collider != null)
                     {
                         attacked = true;
+                        StartCoroutine(AttackEffect(currentNode, targetNode));
 
                         if (hit.collider.CompareTag("EnemyUnit"))
                         {
                             hit.collider.GetComponent<UnitStats>().health = hit.collider.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                            StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
                         }
                         UnitDeselected();
                     }
@@ -275,7 +279,7 @@ public class UnitControl : MonoBehaviour
 
     private void AimVisibility()
     {
-        if (unitSelected && !attacked)
+        if (unitSelected && unitPhase == 1)
         {
             aimLine.gameObject.SetActive(true);
             aimLine.positionCount = 2;
@@ -287,4 +291,38 @@ public class UnitControl : MonoBehaviour
             aimLine.gameObject.SetActive(false);
         }
     }
-}
+
+    public IEnumerator AttackEffect(Node currentPos, Node targetPos)
+    {
+        float time = 0f;
+        while (time < 1f)
+        {
+            weaponEffect.SetActive(true);
+            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time/1f);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        if (time > 1f)
+        {
+            weaponEffect.SetActive(false);
+        }
+
+    }
+
+    private void PhaseCheck()
+    {
+        if (!moved && !attacked)
+        {
+            unitPhase = 0;
+        }
+        else if (moved && !attacked)
+        {
+            unitPhase = 1;
+        }
+        else if (moved && attacked)
+        {
+            unitPhase = 2;
+        }
+    }
+ }

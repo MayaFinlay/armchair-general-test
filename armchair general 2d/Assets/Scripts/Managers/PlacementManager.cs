@@ -92,7 +92,8 @@ public class PlacementManager : MonoBehaviour
                 {
                     Vector3 gridSquarePos = targetNode.worldPosition;
                     targetNode.hasUnit = true;
-                    Instantiate(unitPrefabs[unitToBePlaced], gridSquarePos, Quaternion.identity);
+                    GameObject unit = Instantiate(unitPrefabs[unitToBePlaced], gridSquarePos, Quaternion.identity);
+                    StartCoroutine(unit.GetComponent<UnitStats>().GlitchEffect());
                     shopReference.playerCurrency = shopReference.playerCurrency - shopReference.shopPrices[unitToBePlaced];
                 }
             }

@@ -20,6 +20,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 315984720109137251, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
+      propertyPath: weaponEffect
+      value: 
+      objectReference: {fileID: 1870018400743396886}
+    - target: {fileID: 315984720109137251, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
       propertyPath: unitAttackRange
       value: 2
       objectReference: {fileID: 0}
@@ -62,6 +66,10 @@ PrefabInstance:
     - target: {fileID: 3798845213261386175, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291944429837047916, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6599365853016895180, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
       propertyPath: m_RootOrder
@@ -131,11 +139,20 @@ PrefabInstance:
       propertyPath: attackDamage
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9124704447234065391, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
 --- !u!1 &878733956215114534 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4921977716537389185, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
+  m_PrefabInstance: {fileID: 5224038435532045223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1870018400743396886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5876107436139408817, guid: b6ff2fa0ea8e57246ba4c1956eca1fbe, type: 3}
   m_PrefabInstance: {fileID: 5224038435532045223}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3432979917795620484 stripped

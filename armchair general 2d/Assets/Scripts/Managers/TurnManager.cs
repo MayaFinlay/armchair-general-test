@@ -9,6 +9,7 @@ public class TurnManager : MonoBehaviour
     [Header("Functionality")]
     [SerializeField] private ShopManager shopReference;
     [SerializeField] private PlacementManager placementReference;
+    [SerializeField] private EnemyAI enemyReference;
     [SerializeField] private GameObject[] placementButtons;
     [SerializeField] private GameObject placementIcon;
     [SerializeField] private GameObject endButton;
@@ -49,6 +50,8 @@ public class TurnManager : MonoBehaviour
             endButton.GetComponent<Button>().enabled = true;
             endButton.GetComponent<RawImage>().texture = endButtonTex[0];
 
+            enemyReference.enabled = false;
+
             shopReference.enabled = true;
             placementReference.enabled = true;
             placementIcon.SetActive(true);
@@ -66,12 +69,15 @@ public class TurnManager : MonoBehaviour
             }
 
             currentPhase = 0;
-            //ChangePhase();
         }
         else if (enemyTurn)
         {
             endButton.GetComponent<Button>().enabled = false;
             endButton.GetComponent<RawImage>().texture = endButtonTex[1];
+
+            enemyReference.enabled = true;
+            enemyReference.enemyCurrency = enemyReference.enemyCurrency + turnReward;
+            enemyReference.BuyUnits();
 
             shopReference.enabled = false;
             placementReference.enabled = false;
@@ -87,51 +93,6 @@ public class TurnManager : MonoBehaviour
                 placementButtons[j].GetComponent<Button>().enabled = false;
             }
         }
-    }
-
-    private void ChangePhase()
-    {
-        switch (currentPhase)
-        {
-            case 0:
-                shopReference.enabled = true;
-                placementReference.enabled = true;
-                placementIcon.SetActive(true);
-                for (int j = 0; j < placementButtons.Length; j++)
-                {
-                    placementButtons[j].GetComponent<Button>().enabled = true;
-                }
-
-                for (int i = 0; i < friendlyUnits.Length; i++)
-                {
-                    friendlyUnits[i].GetComponent<UnitControl>().enabled = false;
-                }
-                break;
-            case 1:
-                shopReference.enabled = false;
-                placementReference.enabled = false;
-                placementIcon.SetActive(true);
-
-
-                for (int i = 0; i < friendlyUnits.Length; i++)
-                {
-                    friendlyUnits[i].GetComponent<UnitControl>().enabled = true;
-                }
-                break;
-            case 2:
-                shopReference.enabled = false;
-                placementReference.enabled = false;
-                placementIcon.SetActive(true);
-
-
-                for (int i = 0; i < friendlyUnits.Length; i++)
-                {
-                    friendlyUnits[i].GetComponent<UnitControl>().enabled = true;
-                }
-                break;
-
-        }
-
     }
 
 }

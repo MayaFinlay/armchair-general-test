@@ -9,6 +9,7 @@ TagManager:
   - PlayerSpawn
   - EnemySpawn
   - EnemyUnit
+  - Walkable
   layers:
   - Default
   - TransparentFX

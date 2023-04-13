@@ -7,13 +7,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 978659103465067052, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2152256835836765993, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_Name
       value: SniperUPUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 2901881674817690281, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4411642703045846383, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: moved
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4411642703045846383, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: upgraded
@@ -59,22 +67,6 @@ PrefabInstance:
       propertyPath: southAnchors.Array.data[1]
       value: 
       objectReference: {fileID: 8732000957489259084}
-    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
-      propertyPath: health
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
-      propertyPath: upgraded
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
-      propertyPath: attackRange
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297377295256344750, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
-      propertyPath: attackDamage
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 6775068420526927615, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -125,6 +117,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7119768251228858048, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7929341240193896544, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9215743950642531840, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9215743950642531840, guid: d20226b8a20f6b44d8b56afc9584f4bd, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
