@@ -160,7 +160,10 @@ MonoBehaviour:
   shopReference: {fileID: 474600575}
   placementReference: {fileID: 343869028}
   enemyReference: {fileID: 1745283636}
-  placementButtons: []
+  placementButtons:
+  - {fileID: 2002463619}
+  - {fileID: 352846775}
+  - {fileID: 1429753226}
   placementIcon: {fileID: 958991213}
   endButton: {fileID: 625166520}
   turnReward: 65
