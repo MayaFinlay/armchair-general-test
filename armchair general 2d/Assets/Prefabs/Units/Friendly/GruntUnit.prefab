@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 1548278638825756413}
   - component: {fileID: -5196171481589225105}
   - component: {fileID: 6755108566635074734}
+  - component: {fileID: 108401757715546817}
   m_Layer: 0
   m_Name: GruntUnit
   m_TagString: FriendlyUnit
@@ -272,9 +273,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridReference: {fileID: 0}
   shopReference: {fileID: 0}
+  turnReference: {fileID: 0}
   unitStats: {fileID: 6755108566635074734}
   placementIcon: {fileID: 0}
   unitSelected: 0
+  anyUnitsSelected: 0
   moved: 0
   northAnchors:
   - {fileID: 5977712615555438820}
@@ -295,6 +298,8 @@ MonoBehaviour:
   attacked: 0
   aimLine: {fileID: 7553141443422735317}
   weaponEffect: {fileID: 7065522640614287805}
+  unitPhase: 0
+  isActive: 1
 --- !u!114 &6755108566635074734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,10 +317,31 @@ MonoBehaviour:
   maxHealth: 10
   healthbar: {fileID: 7967816784360740842}
   damageEffect: {fileID: 2494921872196458153}
-  attackRange: 2
+  attackRange: 4
   attackDamage: 1.5
   upgraded: 0
   glitchEffect: {fileID: 7264479800683322464}
+--- !u!50 &108401757715546817
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658567158731565865}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &1741076500161295011
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,7 +802,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 8448425730708521472}
   m_HandleRect: {fileID: 0}

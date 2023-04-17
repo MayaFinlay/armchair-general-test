@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: attackRange
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: attackDamage
@@ -126,6 +126,14 @@ PrefabInstance:
     - target: {fileID: 7499706947826854592, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967816784360740842, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_Value
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967816784360740842, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_MaxValue
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8448425730708521472, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -211,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296175739591382615, guid: 72c27419317457341bfc0060e283f04e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72c27419317457341bfc0060e283f04e, type: 3}

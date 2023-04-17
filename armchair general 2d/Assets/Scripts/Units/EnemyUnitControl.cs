@@ -1,32 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyUnitControl : MonoBehaviour
 {
 
     [SerializeField] private GridGen gridReference;
+    [SerializeField] private TurnManager turnReference;
     [SerializeField] private GameObject[] friendlyUnits;
-    private GameObject targetUnit;
+    [SerializeField] private UnitStats unitStats;
+
+    [SerializeField] private GameObject targetUnit;
+    [SerializeField] private GameObject unitToAttack;
+    [SerializeField] private GameObject weaponEffect;
+    public bool attackAttempted = false;
+    [SerializeField] private bool unitDetected = false;
+
+    [SerializeField] private CircleCollider2D unitDetectionCol;
 
     [SerializeField] private GameObject[] northAnchors, eastAnchors, westAnchors, southAnchors;
 
-    [SerializeField] private bool moved = false;
-    [SerializeField] private bool attacked = false;
+    public bool moved = false;
+    public bool attacked = false;
 
     private void Awake()
     {
         gridReference = GameObject.Find("GridGenerator").GetComponent<GridGen>();
+        turnReference = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         Node currentStart = gridReference.GetNodeFromWorldPoint(transform.position);
-        currentStart.hasUnit = true; 
+        currentStart.hasUnit = true;
+        unitDetectionCol.radius = unitStats.attackRange / (2 * Mathf.PI);
     }
 
     private void Update()
     {
         friendlyUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
         AssignTarget();
-        CheckMoveValidity();
     }
 
     private void AssignTarget()
@@ -41,7 +52,16 @@ public class EnemyUnitControl : MonoBehaviour
     // Movement
     public void UnitMovement()
     {
-        Node targetNode = gridReference.GetNodeFromWorldPoint(targetUnit.transform.position);
+        CheckMoveValidity();
+
+        GameObject[][] allMoveAnchors = new GameObject[][] { northAnchors, eastAnchors, southAnchors, westAnchors };
+        int randomDir = Random.Range(0, allMoveAnchors.Length);
+        GameObject[] targetDir = allMoveAnchors[randomDir];
+
+        int randomNode = Random.Range(0, targetDir.Length);
+        GameObject targetPos = targetDir[randomNode];
+
+        Node targetNode = gridReference.GetNodeFromWorldPoint(targetPos.transform.position);
         Node previousNode = gridReference.GetNodeFromWorldPoint(transform.position);
 
         if (!targetNode.hasObject && !targetNode.hasUnit && targetNode.withinMoveRange)
@@ -52,6 +72,13 @@ public class EnemyUnitControl : MonoBehaviour
             transform.position = targetNode.worldPosition;
         }
 
+        foreach (Node n in gridReference.grid)
+        {
+            if (n.withinMoveRange)
+            {
+                n.withinMoveRange = false;
+            }
+        }
     }
 
     private void CheckMoveValidity()
@@ -78,6 +105,11 @@ public class EnemyUnitControl : MonoBehaviour
                         n.withinMoveRange = true;
                         currentArray[i].tag = "Walkable";
                     }
+                    else
+                    {
+                        n.withinMoveRange = false;
+                        currentArray[i].tag = "Untagged";
+                    }
                 }
                 else
                 {
@@ -86,7 +118,7 @@ public class EnemyUnitControl : MonoBehaviour
                 }
             }
         }
-     }
+    }
 
     private bool MoveWithinGrid(Vector3 moveNodePos)
     {
@@ -99,4 +131,79 @@ public class EnemyUnitControl : MonoBehaviour
         }
         return false;
     }
+
+    // Attack
+    public void UnitAttack()
+    {
+        if (unitDetected)
+        {
+            Node targetNode = gridReference.GetNodeFromWorldPoint(unitToAttack.transform.position);
+            Node currentNode = gridReference.GetNodeFromWorldPoint(transform.position);
+
+            float dirX = targetNode.x - currentNode.x;
+            float dirY = targetNode.y - currentNode.y;
+
+            Vector3 direction = new Vector3(dirX, dirY);
+            float distance = direction.magnitude;
+
+            if (distance <= unitStats.attackRange)
+            {
+                RaycastHit2D hit = Physics2D.Linecast(currentNode.worldPosition, targetNode.worldPosition);
+                if (hit.collider != null)
+                {
+                    attacked = true;
+                    StartCoroutine(AttackEffect(currentNode, targetNode));
+
+                    if (hit.collider.CompareTag("FriendlyUnit"))
+                    {
+                        StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
+                        hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                    }
+                    else if (hit.collider.CompareTag("FriendlyBase"))
+                    {
+                        hit.collider.gameObject.GetComponent<BaseStats>().health = hit.collider.gameObject.GetComponent<BaseStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                    }
+                }
+            }
+        }
+
+        attackAttempted = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("FriendlyUnit") || collision.gameObject.CompareTag("FriendlyBase"))
+        {
+            unitDetected = true;
+            unitToAttack = collision.gameObject;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("FriendlyUnit") || collision.gameObject.CompareTag("FriendlyBase"))
+        {
+            unitDetected = false;
+            unitToAttack = null;
+        }
+    }
+
+
+    public IEnumerator AttackEffect(Node currentPos, Node targetPos)
+    {
+        float time = 0f;
+        while (time < 1f)
+        {
+            weaponEffect.SetActive(true);
+            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time / 1f);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        if (time > 1f)
+        {
+            weaponEffect.SetActive(false);
+        }
+
+    }
+
 }

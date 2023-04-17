@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 108401757715546817, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_Mass
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 108401757715546817, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1658567158731565865, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_Name
       value: EnemyGruntUnit
@@ -19,10 +27,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6030263686793076004, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_Name
+      value: Range
+      objectReference: {fileID: 0}
     - target: {fileID: 6115836541213303551, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a80a9a218dc232f40af5509119229d2d, type: 3}
+    - target: {fileID: 6661008020537194281, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: unitType
       value: 0
@@ -85,6 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5196171481589225105, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+    - {fileID: 7553141443422735317, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
 --- !u!1 &1346600219511719149 stripped
 GameObject:
@@ -99,6 +116,22 @@ GameObject:
 --- !u!1 &1713888231585551757 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5846481796981528655, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+  m_PrefabInstance: {fileID: 5109919215565802946}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1969448528350894444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
+  m_PrefabInstance: {fileID: 5109919215565802946}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5903795219264759531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 142f53308fe487d4cbb4e445f8d87016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2659326221408887935 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7065522640614287805, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
   m_PrefabInstance: {fileID: 5109919215565802946}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3324735301208346196 stripped
@@ -131,6 +164,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1658567158731565865, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
   m_PrefabInstance: {fileID: 5109919215565802946}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &8526517681671344812
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5903795219264759531}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!114 &7481982296270889627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +193,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridReference: {fileID: 0}
+  turnReference: {fileID: 0}
   friendlyUnits: []
+  unitStats: {fileID: 1969448528350894444}
+  targetUnit: {fileID: 0}
+  unitToAttack: {fileID: 0}
+  weaponEffect: {fileID: 2659326221408887935}
+  attackAttempted: 0
+  unitDetected: 0
+  unitDetectionCol: {fileID: 8526517681671344812}
   northAnchors:
   - {fileID: 1449892449000592678}
   - {fileID: 1713888231585551757}

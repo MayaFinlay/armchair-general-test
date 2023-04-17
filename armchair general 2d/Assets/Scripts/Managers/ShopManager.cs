@@ -69,23 +69,6 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    /*public void DisplayWithUpgrade()
-    {
-        if (!unitUpgraded)
-        {
-            infoDisplay.SetActive(true);
-            upgradeDisplay.SetActive(true);
-            infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
-            upgradeDisplay.GetComponent<RawImage>().texture = unitUpgrade[unitType];
-        }
-        else
-        {
-            infoDisplay.SetActive(true);
-            upgradeDisplay.SetActive(false);
-            infoDisplay.GetComponent<RawImage>().texture = upgradedInfo[unitType];
-        }
-    }*/
-
     public void HideDisplay()
     {
         infoDisplay.SetActive(false);
@@ -101,7 +84,6 @@ public class ShopManager : MonoBehaviour
             unitUpgraded = true;
             DisplayInfo();
             GameObject unit = Instantiate(upgradePrefabs[unitType], unitSelected.transform.position, Quaternion.identity);
-            StartCoroutine(unit.GetComponent<UnitStats>().GlitchEffect());
             Destroy(unitSelected);
         }
     }

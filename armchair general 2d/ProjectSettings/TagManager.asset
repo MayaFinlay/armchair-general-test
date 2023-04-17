@@ -10,6 +10,8 @@ TagManager:
   - EnemySpawn
   - EnemyUnit
   - Walkable
+  - FriendlyBase
+  - EnemyBase
   layers:
   - Default
   - TransparentFX

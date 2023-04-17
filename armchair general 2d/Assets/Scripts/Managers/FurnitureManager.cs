@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FurnitureManager : MonoBehaviour
@@ -16,8 +17,11 @@ public class FurnitureManager : MonoBehaviour
     public void SetFurnitureToGrid()
     {
         furniture = GameObject.FindGameObjectsWithTag("Furniture");
-        
-        for(int i = 0; i < furniture.Length; i++)
+        var enemyBase = GameObject.FindGameObjectsWithTag("EnemyBase");
+        var friendlyBase = GameObject.FindGameObjectsWithTag("FriendlyBase");
+
+        furniture = furniture.Concat(enemyBase).Concat(friendlyBase).ToArray();
+        for (int i = 0; i < furniture.Length; i++)
         {
             Transform[] anchorPoints = furniture[i].transform.GetComponentsInChildren<Transform>();
             

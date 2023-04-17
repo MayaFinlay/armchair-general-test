@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -8,34 +9,38 @@ using static UnityEngine.UI.CanvasScaler;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private GridGen gridReference;
-    [SerializeField] private EnemyUnitControl enemyReference;
+    [SerializeField] private TurnManager turnReference;
+    [SerializeField] private ShopManager shopReference;
 
     public int enemyCurrency = 600;
     [SerializeField] private GameObject[] enemyPrefabs;
-
-    [SerializeField] private int phase = 0;
-    [SerializeField] private bool moved = false;
-    [SerializeField] private bool attacked = false;
 
     [SerializeField] private GameObject[] enemyUnits;
     [SerializeField] private int maxEnemies;
     [SerializeField] private GameObject[] spawnPoints;
     [SerializeField] private int unitToSpawn; //Grunt = 0, Sniper = 1, Tank = 2
 
+    [SerializeField] private bool[] attackCheck = {};
+
+    private void Awake()
+    {
+        spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawn");
+    }
+
     private void Update()
     {
         enemyUnits = GameObject.FindGameObjectsWithTag("EnemyUnit");
-        PhaseCheck();
+        AllOptionsExplored();
     }
 
     public void BuyUnits()
     {
-        if (enemyUnits.Length <= maxEnemies)
+        if (enemyUnits.Length < maxEnemies && turnReference.enemyTurn)
         {
             switch (enemyCurrency)
             {
                 case <= 200:
-                    MoveUnits();
+                    StartCoroutine(MoveUnits());
                     break;
                 case <= 299:
                     unitToSpawn = 0;
@@ -51,15 +56,14 @@ public class EnemyAI : MonoBehaviour
                     break;
             }
         }
-        else
+        else if (enemyUnits.Length >= maxEnemies && turnReference.enemyTurn)
         {
-            MoveUnits();
+            StartCoroutine(MoveUnits());
         }
     }
 
     private void SpawnUnit()
     {
-        spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawn");
         int randomPos = Random.Range(0, spawnPoints.Length);
         Vector3 randomSpawn = spawnPoints[randomPos].transform.position;
 
@@ -68,53 +72,62 @@ public class EnemyAI : MonoBehaviour
         if (!targetNode.hasUnit)
         {
             GameObject unit = Instantiate(enemyPrefabs[unitToSpawn], randomSpawn, Quaternion.identity);
+            enemyCurrency = enemyCurrency - shopReference.shopPrices[unitToSpawn];
             StartCoroutine(unit.GetComponent<UnitStats>().GlitchEffect());
 
             targetNode.hasUnit = true;
+            StartCoroutine(MoveUnits());
         }
-        else return;
+        BuyUnits();
     }
 
-    private void MoveUnits()
+    public IEnumerator MoveUnits()
     {
-        if (phase == 0)
+        if (enemyUnits != null && turnReference.enemyTurn)
         {
+            yield return new WaitForSecondsRealtime(1f);
+
             for (int i = 0; i < enemyUnits.Length; i++)
             {
-                enemyReference.UnitMovement();
+                if (!enemyUnits[i].GetComponent<EnemyUnitControl>().moved)
+                {
+                    enemyUnits[i].GetComponent<EnemyUnitControl>().UnitMovement();
+                }
+            }
+            StartCoroutine(AttackUnits());
+        }
+    }
+
+    public IEnumerator AttackUnits()
+    {
+        if (enemyUnits != null && turnReference.enemyTurn)
+        {
+            yield return new WaitForSecondsRealtime(1f);
+
+            for (int i = 0; i < enemyUnits.Length; i++)
+            {
+                if (!enemyUnits[i].GetComponent<EnemyUnitControl>().attacked)
+                {
+                    enemyUnits[i].GetComponent<EnemyUnitControl>().UnitAttack();
+                }
             }
         }
     }
 
-    private void AttackUnits()
+    private void AllOptionsExplored()
     {
-        if (phase == 1)
+        if (turnReference.enemyTurn)
         {
-            
-        }
-    }
-
-    private void PhaseCheck()
-    {
-        bool allMoved = false;
-        for (int i = 0; i < enemyUnits.Length; i++)
-        {
-            if (moved)
+            attackCheck = new bool[enemyUnits.Length];
+            for (int i = 0; i < enemyUnits.Length; ++i)
             {
-                allMoved = true;
+                attackCheck[i] = enemyUnits[i].GetComponent<EnemyUnitControl>().attackAttempted;
             }
-            else
+
+            if (attackCheck.Length == enemyUnits.Length && !attackCheck.Contains(false))
             {
-                allMoved = false;
-                phase = 0;
+                turnReference.EndTurn();
             }
         }
-
-        if (allMoved)
-        {
-            phase = 1;
-            AttackUnits();
-        }
-
     }
 }

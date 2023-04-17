@@ -13,13 +13,14 @@ public class UnitControl : MonoBehaviour
     [Header("Functionality")]
     [SerializeField] private GridGen gridReference;
     [SerializeField] private ShopManager shopReference;
+    [SerializeField] private TurnManager turnReference;
     [SerializeField] private UnitStats unitStats;
     [SerializeField] private GameObject placementIcon;
     private Vector3 rawMousePos;
     private Vector3 worldMousePos;
 
     public bool unitSelected = false;
-    private bool anyUnitsSelected = false;
+    [SerializeField] private bool anyUnitsSelected = false;
 
     [Header("Movement Functionality")]
     public bool moved = false;
@@ -31,13 +32,16 @@ public class UnitControl : MonoBehaviour
     [SerializeField] private LineRenderer aimLine;
     [SerializeField] private GameObject weaponEffect;
 
-    private int unitPhase = 0;
+    public int unitPhase = 0;
+
+    public bool isActive = true;
 
 
     void Awake()
     {
         gridReference = GameObject.Find("GridGenerator").GetComponent<GridGen>();
         shopReference = GameObject.Find("ShopManager").GetComponent<ShopManager>();
+        turnReference = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         placementIcon = GameObject.Find("PlacementManager").transform.Find("PlacementCursorIcon").gameObject;
     }
 
@@ -54,11 +58,14 @@ public class UnitControl : MonoBehaviour
     //Selecting
     void OnMouseDown()
     {
-        if (CheckSelects()) //Checks if any units are selected to avoid double select
+        if (isActive)
         {
-            UnitSelected();
-            shopReference.unitSelected = this.gameObject;
-            shopReference.DisplayInfo();
+            if (CheckSelects()) //Checks if any units are selected to avoid double select
+            {
+                UnitSelected();
+                shopReference.unitSelected = this.gameObject;
+                shopReference.DisplayInfo();
+            }
         }
     }
 
@@ -88,10 +95,10 @@ public class UnitControl : MonoBehaviour
     private bool CheckSelects()
     {
         GameObject[] allUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
-        
-        for(int i = 0; i < allUnits.Length; i++)
+
+        for (int i = 0; i < allUnits.Length; i++)
         {
-            if(allUnits[i].GetComponent<UnitControl>() != null)
+            if (allUnits[i].GetComponent<UnitControl>() != null)
             {
                 if (allUnits[i].GetComponent<UnitControl>().unitSelected)
                 {
@@ -162,7 +169,7 @@ public class UnitControl : MonoBehaviour
     private void CheckMoveValidity()
     {
         GameObject[][] allMoveAnchors = new GameObject[][] { northAnchors, eastAnchors, southAnchors, westAnchors };
-        
+
         if (unitSelected && unitPhase == 0)
         {
             foreach (GameObject[] anchorArray in allMoveAnchors)
@@ -185,6 +192,12 @@ public class UnitControl : MonoBehaviour
                             n.withinMoveRange = true;
                             currentArray[i].tag = "Walkable";
                             currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
+                        }
+                        else
+                        {
+                            n.withinMoveRange = false;
+                            currentArray[i].tag = "Untagged";
+                            currentArray[i].GetComponent<SpriteRenderer>().enabled = false;
                         }
                     }
                     else
@@ -258,8 +271,12 @@ public class UnitControl : MonoBehaviour
 
                         if (hit.collider.CompareTag("EnemyUnit"))
                         {
-                            hit.collider.GetComponent<UnitStats>().health = hit.collider.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
                             StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
+                            hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                        }
+                        else if (hit.collider.CompareTag("EnemyBase"))
+                        {
+                            hit.collider.gameObject.GetComponent<BaseStats>().health = hit.collider.gameObject.GetComponent<BaseStats>().health - this.GetComponent<UnitStats>().attackDamage;
                         }
                         UnitDeselected();
                     }
@@ -298,7 +315,7 @@ public class UnitControl : MonoBehaviour
         while (time < 1f)
         {
             weaponEffect.SetActive(true);
-            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time/1f);
+            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time / 1f);
             time += Time.deltaTime;
             yield return null;
         }
@@ -325,4 +342,4 @@ public class UnitControl : MonoBehaviour
             unitPhase = 2;
         }
     }
- }
+}
