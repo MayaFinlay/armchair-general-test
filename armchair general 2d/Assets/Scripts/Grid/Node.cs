@@ -5,10 +5,10 @@ public class Node : IComparable<Node>
 {
     //Node Attributes
     public int x, y;
-    public bool walkable ;
+    public bool walkable ; // Consider removal
     public Vector2 worldPosition;
-    public bool hasUnit = false;
-    public bool hasObject = false; //Furniture Manager
+    public bool hasUnit = false; 
+    public bool hasObject = false; 
     public bool playerSpawnable = false; public bool enemySpawnable = false;
     public bool withinMoveRange = false;
     public bool withinAttackRange = false;
@@ -34,7 +34,7 @@ public class Node : IComparable<Node>
         worldPosition = _worldPosition;
     }
 
-    //Interface Compare Function For Pathfinding
+    //Interface Compare Function For Pathfinding - not in use yet
     public int CompareTo(Node nodeToCompare)
     {
         int compare = fCost.CompareTo(nodeToCompare.fCost);
