@@ -315,7 +315,7 @@ public class UnitControl : MonoBehaviour
         while (time < 1f)
         {
             weaponEffect.SetActive(true);
-            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time / 1f);
+            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time / 0.25f);
             time += Time.deltaTime;
             yield return null;
         }
