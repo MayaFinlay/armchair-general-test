@@ -741,7 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placementReference: {fileID: 343869028}
   unitType: 0
-  playerCurrency: 5000
+  playerCurrency: 600
   shopPrices: c80000002c01000090010000
   upgradePrices: 90010000f401000058020000
   currencyDisplay: {fileID: 706663025}
