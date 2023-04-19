@@ -320,9 +320,28 @@ MonoBehaviour:
   healthbar: {fileID: 7967816784360740842}
   damageEffect: {fileID: 2494921872196458153}
   attackRange: 4
-  attackDamage: 1.5
+  attackDamage: 2
   upgraded: 0
   glitchEffect: {fileID: 7264479800683322464}
+  voiceSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  idleAudio:
+  - {fileID: 8300000, guid: 57b777ba4ad69844d863f2e3d7474bd1, type: 3}
+  - {fileID: 8300000, guid: b8815d90d2a55044793ae00ede90a7bd, type: 3}
+  spawnAudio: {fileID: 8300000, guid: 52434bb36208b0240b58f4ab77606d41, type: 3}
+  moveAudio:
+  - {fileID: 8300000, guid: bddc75acef90fb849aaa8f948f660ced, type: 3}
+  - {fileID: 8300000, guid: 823f541d893c70248a9f00e12ce85f75, type: 3}
+  weaponAudio: {fileID: 8300000, guid: 31809c188f91fc546821248670443249, type: 3}
+  attackAudio:
+  - {fileID: 8300000, guid: b333f88f19323ed4fa537ca01d730ec3, type: 3}
+  - {fileID: 8300000, guid: cb114cb6363d5244e8596dc958ce95a3, type: 3}
+  killAudio:
+  - {fileID: 8300000, guid: c05499552805b19468e3073e245923a4, type: 3}
+  - {fileID: 8300000, guid: fec5fb46dd69d604292fbf0e0aa98039, type: 3}
+  deathAudio:
+  - {fileID: 8300000, guid: eaff086626f90274aa8ce77324c03109, type: 3}
+  - {fileID: 8300000, guid: 63145693b2b23e8408d2bfe4a6c26e80, type: 3}
 --- !u!50 &108401757715546817
 Rigidbody2D:
   serializedVersion: 4

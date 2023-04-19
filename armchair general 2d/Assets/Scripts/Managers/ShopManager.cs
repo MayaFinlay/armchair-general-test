@@ -45,18 +45,23 @@ public class ShopManager : MonoBehaviour
         {
             infoDisplay.SetActive(true);
             unitType = placementReference.unitToBePlaced;
+           
             infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
         }
         else if(unitSelected.GetComponent<UnitControl>().unitSelected)
         {
             infoDisplay.SetActive(true);
             unitType = unitSelected.GetComponent<UnitStats>().unitType;
-            infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
 
             if (unitSelected.GetComponent<UnitControl>().unitSelected && !unitUpgraded && !unitSelected.GetComponent<UnitControl>().moved)
             {
+                infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
                 upgradeDisplay.SetActive(true);
                 upgradeDisplay.GetComponent<RawImage>().texture = unitUpgrade[unitType];
+            }
+            else if (unitSelected.GetComponent<UnitControl>().unitSelected && unitUpgraded)
+            {
+                infoDisplay.GetComponent<RawImage>().texture = upgradedInfo[unitType];
             }
             else
             {
@@ -80,6 +85,7 @@ public class ShopManager : MonoBehaviour
     {
         if (!unitSelected.GetComponent<UnitStats>().upgraded && playerCurrency >= upgradePrices[unitType])
         {
+            HideDisplay();
             playerCurrency = playerCurrency - upgradePrices[unitType];
             unitUpgraded = true;
             DisplayInfo();

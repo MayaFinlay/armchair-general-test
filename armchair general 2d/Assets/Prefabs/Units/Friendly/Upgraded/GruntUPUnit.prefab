@@ -429,11 +429,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: attackRange
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: attackDamage
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6755108566635074734, guid: 9267b3bb19229334f85c7f4a835e0d7c, type: 3}
       propertyPath: weaponEffect

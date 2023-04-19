@@ -165,6 +165,5 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-
 }
 

@@ -22,12 +22,27 @@ public class UnitStats : MonoBehaviour
     public bool upgraded = false;
     [SerializeField] private GameObject glitchEffect;
 
+    [Header("Audio")]
+    [HideInInspector] public AudioSource voiceSource;
+    [HideInInspector] public AudioSource sfxSource;
+    public AudioClip[] idleAudio;
+    public AudioClip spawnAudio;
+    public AudioClip[] moveAudio;
+    public AudioClip weaponAudio;
+    public AudioClip[] attackAudio;
+    public AudioClip[] killAudio;
+    public AudioClip[] deathAudio;
+    [HideInInspector] public int audioRarity;
+
     private void Awake()
     {
         health = maxHealth;
         healthbar.maxValue = maxHealth;
         glitchEffect.GetComponent<ParticleSystem>().Stop();
         damageEffect.GetComponent<ParticleSystem>().Stop();
+
+        voiceSource = GameObject.Find("VoiceManager").GetComponent<AudioSource>();
+        sfxSource = GameObject.Find("SFXManager").GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -41,13 +56,37 @@ public class UnitStats : MonoBehaviour
     {
         if (health <= 0)
         {
-            Destroy(this.gameObject);
+            StartCoroutine(DeathEffect());
         }
+    }
+
+    public int AudioRarity()
+    {
+        int randomRarity = Random.Range(0, 100);
+
+        switch (randomRarity)
+        {
+            case <= 40:
+                return audioRarity = -1;
+            case <= 70:
+                return audioRarity = 0;
+            case <= 100:
+                return audioRarity = 1;
+            default:
+                return audioRarity = -1;
+        }
+    }
+
+    public IEnumerator DeathEffect()
+    {
+        if (AudioRarity() >= 0) voiceSource.PlayOneShot(deathAudio[audioRarity]);
+        yield return new WaitForSecondsRealtime(0.5f);
+        Destroy(this.gameObject);
     }
 
     public IEnumerator GlitchEffect()
     {
-
+        sfxSource.PlayOneShot(spawnAudio);
         glitchEffect.SetActive(true);
         glitchEffect.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSecondsRealtime(1f);

@@ -70,6 +70,7 @@ public class EnemyUnitControl : MonoBehaviour
             previousNode.hasUnit = false;
             targetNode.hasUnit = true;
             transform.position = targetNode.worldPosition;
+            if (unitStats.AudioRarity() >= 0) unitStats.voiceSource.PlayOneShot(unitStats.moveAudio[unitStats.audioRarity]);
         }
 
         foreach (Node n in gridReference.grid)
@@ -158,6 +159,12 @@ public class EnemyUnitControl : MonoBehaviour
                     {
                         StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
                         hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+
+
+                        if (hit.collider.GetComponent<UnitStats>().health <= this.GetComponent<UnitStats>().attackDamage)
+                        {
+                            if (unitStats.AudioRarity() >= 0) unitStats.voiceSource.PlayOneShot(unitStats.killAudio[unitStats.audioRarity]);
+                        }
                     }
                     else if (hit.collider.CompareTag("FriendlyBase"))
                     {
@@ -190,6 +197,8 @@ public class EnemyUnitControl : MonoBehaviour
 
     public IEnumerator AttackEffect(Node currentPos, Node targetPos)
     {
+        unitStats.sfxSource.PlayOneShot(unitStats.weaponAudio);
+
         float time = 0f;
         while (time < 1f)
         {
