@@ -30,7 +30,9 @@ public class UnitControl : MonoBehaviour
     [Header("Attack Functionality")]
     public bool attacked = false;
     [SerializeField] private LineRenderer aimLine;
+    [SerializeField] private SpriteRenderer rangeDisplay;
     [SerializeField] private GameObject weaponEffect;
+    [SerializeField] private Sprite targetSprite;
 
     public int unitPhase = 0;
 
@@ -43,6 +45,13 @@ public class UnitControl : MonoBehaviour
         shopReference = GameObject.Find("ShopManager").GetComponent<ShopManager>();
         turnReference = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         placementIcon = GameObject.Find("PlacementManager").transform.Find("PlacementCursorIcon").gameObject;
+
+        rangeDisplay.drawMode = SpriteDrawMode.Sliced;
+        //var rangeSize = 2 * unitStats.attackRange;
+        //rangeDisplay.size = new Vector2(rangeSize, rangeSize);
+
+        rangeDisplay.size = new Vector2(unitStats.attackRange, unitStats.attackRange);
+        rangeDisplay.enabled = false;
     }
 
     void Update()
@@ -73,7 +82,15 @@ public class UnitControl : MonoBehaviour
     {
         if (!unitSelected && !anyUnitsSelected)
         {
-            placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+            if (unitPhase == 0)
+            {
+                placementIcon.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+            }
+            else if (unitPhase == 1)
+            {
+                placementIcon.GetComponent<SpriteRenderer>().sprite = targetSprite;
+            }
+
             placementIcon.GetComponent<SpriteRenderer>().enabled = true;
             unitSelected = true;
             shopReference.unitUpgraded = unitStats.upgraded;
@@ -302,10 +319,12 @@ public class UnitControl : MonoBehaviour
             aimLine.positionCount = 2;
             aimLine.SetPosition(0, transform.position);
             aimLine.SetPosition(1, worldMousePos);
+            rangeDisplay.enabled = true;
         }
         else
         {
             aimLine.gameObject.SetActive(false);
+            rangeDisplay.enabled = false;
         }
     }
 
