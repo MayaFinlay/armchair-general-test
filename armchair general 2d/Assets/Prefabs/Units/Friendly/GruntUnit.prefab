@@ -577,7 +577,7 @@ MonoBehaviour:
   damageEffect: {fileID: 2494921872196458153}
   unitDead: 0
   attackRange: 4
-  attackDamage: 2
+  attackDamage: 4
   enemyManager: {fileID: 0}
   upgraded: 0
   glitchEffect: {fileID: 7264479800683322464}
