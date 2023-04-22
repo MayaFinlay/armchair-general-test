@@ -153,7 +153,7 @@ public class EnemyUnitControl : MonoBehaviour
                 if (hit.collider != null)
                 {
                     attacked = true;
-                    StartCoroutine(AttackEffect(currentNode, targetNode));
+                    StartCoroutine(AttackEffect(currentNode, targetNode, hit));
 
                     if (hit.collider.CompareTag("FriendlyUnit"))
                     {
@@ -161,7 +161,7 @@ public class EnemyUnitControl : MonoBehaviour
                         hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
 
 
-                        if (hit.collider.GetComponent<UnitStats>().health <= this.GetComponent<UnitStats>().attackDamage)
+                        if (hit.collider.GetComponent<UnitStats>().health <= 0)
                         {
                             if (unitStats.AudioRarity() >= 0) unitStats.voiceSource.PlayOneShot(unitStats.killAudio[unitStats.audioRarity]);
                         }
@@ -169,6 +169,10 @@ public class EnemyUnitControl : MonoBehaviour
                     else if (hit.collider.CompareTag("FriendlyBase"))
                     {
                         hit.collider.gameObject.GetComponent<BaseStats>().health = hit.collider.gameObject.GetComponent<BaseStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                    }
+                    else
+                    {
+                        StartCoroutine(AttackEffect(currentNode, targetNode, hit));
                     }
                 }
             }
@@ -194,8 +198,7 @@ public class EnemyUnitControl : MonoBehaviour
         }
     }
 
-
-    public IEnumerator AttackEffect(Node currentPos, Node targetPos)
+    public IEnumerator AttackEffect(Node currentPos, Node targetNode, RaycastHit2D hit)
     {
         unitStats.sfxSource.PlayOneShot(unitStats.weaponAudio);
 
@@ -203,12 +206,13 @@ public class EnemyUnitControl : MonoBehaviour
         while (time < 1f)
         {
             weaponEffect.SetActive(true);
-            weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetPos.worldPosition, time / 0.25f);
+            if (hit.collider != null) weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, hit.transform.position, time / 0.25f);
+            else weaponEffect.transform.position = Vector3.Lerp(currentPos.worldPosition, targetNode.worldPosition, time / 0.25f);
             time += Time.deltaTime;
             yield return null;
         }
 
-        if (time > 1f)
+        if (time > 1f || weaponEffect.transform.position == new Vector3(targetNode.x, targetNode.y))
         {
             weaponEffect.SetActive(false);
         }

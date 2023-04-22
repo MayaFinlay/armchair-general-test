@@ -35,9 +35,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private bool playerWon = false;
     [SerializeField] private bool playerLost = false;
     [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private GameObject winUI, lossUI;
     [SerializeField] private Texture[] gameOverTex; //Victory = 0, Defeat = 1
-
-
 
     public void Update()
     {
@@ -50,6 +49,8 @@ public class TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         activeUnits = friendlyUnits.Concat(enemyUnits).ToArray();
 
         playerTurn = !playerTurn;
@@ -91,6 +92,9 @@ public class TurnManager : MonoBehaviour
                 {
                     placementButtons[j].GetComponent<Button>().enabled = true;
                 }
+
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
             }
             else if (enemyTurn && !playerTurn)
             {
@@ -129,19 +133,24 @@ public class TurnManager : MonoBehaviour
 
     private void GameOver()
     {
-        if (turnCounter >= 3)
+        if (!gameOver)
         {
-            if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0)
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            if (turnCounter >= 3)
             {
-                gameOver = true;
-                playerLost = true;
-                Defeat();
-            }
-            else if ((enemyUnits.Length <= 0 && enemyReference.enemyCurrency < shopReference.shopPrices[0]) || enemyBase.GetComponent<BaseStats>().health <= 0)
-            {
-                gameOver = true;
-                playerWon = true;
-                Victory();
+                if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0)
+                {
+                    gameOver = true;
+                    playerLost = true;
+                    Defeat();
+                }
+                else if ((enemyUnits.Length <= 0 && enemyReference.enemyCurrency < shopReference.shopPrices[0]) || enemyBase.GetComponent<BaseStats>().health <= 0)
+                {
+                    gameOver = true;
+                    playerWon = true;
+                    Victory();
+                }
             }
         }
     }
@@ -152,6 +161,7 @@ public class TurnManager : MonoBehaviour
         if (playerWon)
         {
             gameOverScreen.SetActive(true);
+            winUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[0];
         }
     }
@@ -161,6 +171,7 @@ public class TurnManager : MonoBehaviour
         if (playerLost)
         {
             gameOverScreen.SetActive(true);
+            lossUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[1];
         }
     }

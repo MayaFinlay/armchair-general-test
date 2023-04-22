@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class PlacementManager : MonoBehaviour
 {
     [Header("Functionality")]
@@ -24,6 +26,13 @@ public class PlacementManager : MonoBehaviour
         {
             UnitSelected();
         }
+        else
+        {
+            var displayInfo = shopReference.infoDisplay;
+            displayInfo.SetActive(true);
+
+            displayInfo.GetComponent<RawImage>().texture = shopReference.unitInfo[unitToBePlaced];
+        }
 
     }
 
@@ -34,6 +43,13 @@ public class PlacementManager : MonoBehaviour
         {
             UnitSelected();
         }
+        else
+        {
+            var displayInfo = shopReference.infoDisplay;
+            displayInfo.SetActive(true);
+
+            displayInfo.GetComponent<RawImage>().texture = shopReference.unitInfo[unitToBePlaced];
+        }
     }
 
     public void PlaceTank()
@@ -42,6 +58,13 @@ public class PlacementManager : MonoBehaviour
         if (shopReference.playerCurrency >= shopReference.shopPrices[unitToBePlaced])
         {
             UnitSelected();
+        }
+        else
+        {
+            var displayInfo = shopReference.infoDisplay;
+            displayInfo.SetActive(true);
+
+            displayInfo.GetComponent<RawImage>().texture = shopReference.unitInfo[unitToBePlaced];
         }
     }
 

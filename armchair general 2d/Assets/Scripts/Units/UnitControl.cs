@@ -293,7 +293,7 @@ public class UnitControl : MonoBehaviour
                             StartCoroutine(AttackEffect(currentNode, targetNode, hit));
                             StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
 
-                            if (hit.collider.GetComponent<UnitStats>().health <= this.GetComponent<UnitStats>().attackDamage)
+                            if (hit.collider.GetComponent<UnitStats>().health <= 0)
                             {
                                 if (unitStats.AudioRarity() >= 0) unitStats.voiceSource.PlayOneShot(unitStats.killAudio[unitStats.audioRarity]);
                             }
@@ -302,6 +302,10 @@ public class UnitControl : MonoBehaviour
                         {
                             hit.collider.gameObject.GetComponent<BaseStats>().health = hit.collider.gameObject.GetComponent<BaseStats>().health - this.GetComponent<UnitStats>().attackDamage;
 
+                            StartCoroutine(AttackEffect(currentNode, targetNode, hit));
+                        }
+                        else
+                        {
                             StartCoroutine(AttackEffect(currentNode, targetNode, hit));
                         }
                         UnitDeselected();

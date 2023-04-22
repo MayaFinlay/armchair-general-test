@@ -10,6 +10,9 @@ public class MainMenu : MonoBehaviour
     public GameObject settings;
     public GameObject settcan;
     public GameObject glitch;
+    public GameObject levelSelect;
+    public GameObject lsCan;
+
 
     // Start is called before the first frame update
     void Start()
@@ -18,17 +21,25 @@ public class MainMenu : MonoBehaviour
         settings.SetActive(false);
         settcan.SetActive(false);
 
+        levelSelect.SetActive(false);
+        lsCan.SetActive(false);
+
     }
 
     // Update is called once per frame
     public void Settings()
     {
         glitch.SetActive(true);
-        Invoke("Switch", 1f);
+        Invoke("SwitchSettings", 1f);
         
     }
 
-    public void Switch()
+    public void LevelSelect()
+    {
+        glitch.SetActive(true);
+        Invoke("SwitchLevelSelect", 1f);
+    }
+    public void SwitchSettings()
     {
         glitch.SetActive(false);
         main.SetActive(false);
@@ -37,10 +48,19 @@ public class MainMenu : MonoBehaviour
         settcan.SetActive(true);
     }
 
+    public void SwitchLevelSelect()
+    {
+        glitch.SetActive(false);
+        main.SetActive(false);
+        gameObject.SetActive(false);
+        levelSelect.SetActive(true);
+        lsCan.SetActive(true);
+    }
+
     public void StartGame()
     {
         glitch.SetActive(true);
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Level1");
     }
 
     public void Exit()

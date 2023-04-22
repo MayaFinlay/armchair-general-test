@@ -17,9 +17,9 @@ public class ShopManager : MonoBehaviour
 
     [Header("Displays")]
     [SerializeField] private TMP_Text currencyDisplay;
-    [SerializeField] private GameObject infoDisplay;
+    public GameObject infoDisplay;
     [SerializeField] private GameObject upgradeDisplay;
-    [SerializeField] private Texture[] unitInfo;
+    public Texture[] unitInfo;
     [SerializeField] private Texture[] upgradedInfo;
     [SerializeField] private Texture[] unitUpgrade;
 
@@ -45,10 +45,10 @@ public class ShopManager : MonoBehaviour
         {
             infoDisplay.SetActive(true);
             unitType = placementReference.unitToBePlaced;
-           
+
             infoDisplay.GetComponent<RawImage>().texture = unitInfo[unitType];
         }
-        else if(unitSelected.GetComponent<UnitControl>().unitSelected)
+        else if (unitSelected != null && unitSelected.GetComponent<UnitControl>().unitSelected)
         {
             infoDisplay.SetActive(true);
             unitType = unitSelected.GetComponent<UnitStats>().unitType;

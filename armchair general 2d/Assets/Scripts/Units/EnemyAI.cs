@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
+using TMPro;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -19,16 +20,23 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private GameObject[] spawnPoints;
     [SerializeField] private int unitToSpawn; //Grunt = 0, Sniper = 1, Tank = 2
 
-    [SerializeField] private bool[] attackCheck = {};
+    public int spawnableUnitsLeft;
+    public TMP_Text spawnableUnitsText;
+
+
+   [SerializeField] private bool[] attackCheck = {};
 
     private void Awake()
     {
         spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawn");
+        spawnableUnitsLeft = maxEnemies;
+        spawnableUnitsText.SetText(spawnableUnitsLeft.ToString());
     }
 
     private void Update()
     {
         enemyUnits = GameObject.FindGameObjectsWithTag("EnemyUnit");
+        spawnableUnitsText.SetText(spawnableUnitsLeft.ToString());
         AllOptionsExplored();
     }
 
@@ -75,6 +83,7 @@ public class EnemyAI : MonoBehaviour
             StartCoroutine(unit.GetComponent<UnitStats>().GlitchEffect());
 
             targetNode.hasUnit = true;
+            spawnableUnitsLeft = spawnableUnitsLeft - 1;
             StartCoroutine(MoveUnits());
         }
         BuyUnits();
