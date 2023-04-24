@@ -148,9 +148,6 @@ public class TurnManager : MonoBehaviour
     {
         if (!gameOver)
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-
             if (turnCounter >= 3)
             {
                 if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0)
@@ -187,6 +184,9 @@ public class TurnManager : MonoBehaviour
     {
         if (playerWon)
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+
             gameOverScreen.SetActive(true);
             winUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[0];
@@ -198,6 +198,9 @@ public class TurnManager : MonoBehaviour
     {
         if (playerLost)
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+
             gameOverScreen.SetActive(true);
             lossUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[1];
