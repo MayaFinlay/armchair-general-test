@@ -10,7 +10,10 @@ public class InGameMenu : MonoBehaviour
     [SerializeField] private GameObject glitch;
     [SerializeField] private GameObject settcan;
 
+    [Header("Audio")]
     [SerializeField] private AudioSource musicManager;
+    [SerializeField] private AudioSource voiceSource;
+    [SerializeField] private AudioClip settingsClip;
 
     public void Pause()
     {
@@ -38,6 +41,10 @@ public class InGameMenu : MonoBehaviour
         main.SetActive(false);
         settings.SetActive(true);
         settcan.SetActive(true);
+
+
+        voiceSource.clip = settingsClip;
+        voiceSource.Play();
     }
 
     public void NextLevel()

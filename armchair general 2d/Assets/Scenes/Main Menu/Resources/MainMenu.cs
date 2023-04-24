@@ -13,6 +13,12 @@ public class MainMenu : MonoBehaviour
     public GameObject levelSelect;
     public GameObject lsCan;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource voiceSource;
+    [SerializeField] private AudioClip startClip;
+    [SerializeField] private AudioClip settingsClip;
+    static bool firstTime = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +30,31 @@ public class MainMenu : MonoBehaviour
         levelSelect.SetActive(false);
         lsCan.SetActive(false);
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        StartCoroutine(StartNarrative());
+
+    }
+
+    private IEnumerator StartNarrative()
+    {
+        if (firstTime)
+        {
+            firstTime = false;
+            yield return new WaitForSecondsRealtime(1f);
+            voiceSource.clip = startClip;
+            voiceSource.Play();
+
+            yield return new WaitUntil(() => voiceSource.isPlaying == false);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
     }
 
     // Update is called once per frame
@@ -46,6 +77,10 @@ public class MainMenu : MonoBehaviour
         gameObject.SetActive(false);
         settings.SetActive(true);
         settcan.SetActive(true);
+
+
+        voiceSource.clip = settingsClip;
+        voiceSource.Play();
     }
 
     public void SwitchLevelSelect()

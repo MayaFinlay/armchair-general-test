@@ -38,6 +38,19 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private GameObject winUI, lossUI;
     [SerializeField] private Texture[] gameOverTex; //Victory = 0, Defeat = 1
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource voiceSource;
+    [SerializeField] private AudioClip winClip;
+    [SerializeField] private AudioClip lossClip;
+    [SerializeField] private AudioClip[] startClip;
+
+    public void Start()
+    {
+        var random = Random.Range(0, startClip.Length);
+        voiceSource.clip = startClip[random];
+        voiceSource.Play();
+    }
+
     public void Update()
     {
         friendlyUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
@@ -137,21 +150,35 @@ public class TurnManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
+
             if (turnCounter >= 3)
             {
                 if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0)
                 {
+                    AudioStop();
                     gameOver = true;
                     playerLost = true;
                     Defeat();
                 }
                 else if ((enemyUnits.Length <= 0 && enemyReference.enemyCurrency < shopReference.shopPrices[0]) || enemyBase.GetComponent<BaseStats>().health <= 0)
                 {
+                    AudioStop();
                     gameOver = true;
                     playerWon = true;
                     Victory();
                 }
             }
+        }
+    }
+
+    private void AudioStop()
+    {
+        var allAudioSources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (AudioSource audios in allAudioSources)
+        {
+            audios.enabled = false;
+            audios.Stop();
+            audios.enabled = true;
         }
     }
 
@@ -163,6 +190,7 @@ public class TurnManager : MonoBehaviour
             gameOverScreen.SetActive(true);
             winUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[0];
+            voiceSource.PlayOneShot(winClip);
         }
     }
 
@@ -173,6 +201,7 @@ public class TurnManager : MonoBehaviour
             gameOverScreen.SetActive(true);
             lossUI.SetActive(true);
             gameOverScreen.GetComponent<RawImage>().texture = gameOverTex[1];
+            voiceSource.PlayOneShot(lossClip);
         }
     }
 

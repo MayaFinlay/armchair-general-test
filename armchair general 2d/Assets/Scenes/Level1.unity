@@ -915,6 +915,13 @@ MonoBehaviour:
   gameOverTex:
   - {fileID: 2800000, guid: 8bb69315038d6ac41ae92ae171e0a355, type: 3}
   - {fileID: 2800000, guid: 6a0e59fc507e80549846dbaeaab78082, type: 3}
+  voiceSource: {fileID: 1964181341}
+  winClip: {fileID: 8300000, guid: 151737963ebf73c4ab41627ea0c66fa1, type: 3}
+  lossClip: {fileID: 8300000, guid: 891593be2f83ff341a3acdd3edb2aa14, type: 3}
+  startClip:
+  - {fileID: 8300000, guid: 1b12f9ba506d2d54f8facfc8b24a02cd, type: 3}
+  - {fileID: 8300000, guid: 94f9f9c8dac44be4c8e19e9d37a5368a, type: 3}
+  - {fileID: 8300000, guid: e35aafa7ebdf60247bf245a218c8d4f4, type: 3}
 --- !u!4 &124995322
 Transform:
   m_ObjectHideFlags: 0
@@ -1140,7 +1147,7 @@ AudioSource:
   m_GameObject: {fileID: 145467439}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5649156678798121366, guid: 3d064d9e498aec04dbe97f814cb1c3fe, type: 2}
   m_audioClip: {fileID: 8300000, guid: 0e9cfe43ca80f864da74aeff51f61cb2, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -8250,7 +8257,7 @@ AudioSource:
   m_GameObject: {fileID: 1265948982}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5649156678798121366, guid: 3d064d9e498aec04dbe97f814cb1c3fe, type: 2}
   m_audioClip: {fileID: 8300000, guid: 0e9cfe43ca80f864da74aeff51f61cb2, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -9530,6 +9537,8 @@ MonoBehaviour:
   glitch: {fileID: 287911797}
   settcan: {fileID: 1520403882}
   musicManager: {fileID: 1123835218}
+  voiceSource: {fileID: 1964181341}
+  settingsClip: {fileID: 8300000, guid: 804a5572a1c32574f9ca5afcc032362c, type: 3}
 --- !u!1 &1478903799
 GameObject:
   m_ObjectHideFlags: 0
