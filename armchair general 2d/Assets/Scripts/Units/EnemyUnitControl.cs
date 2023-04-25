@@ -12,7 +12,6 @@ public class EnemyUnitControl : MonoBehaviour
     [SerializeField] private GameObject[] friendlyUnits;
     [SerializeField] private UnitStats unitStats;
 
-    [SerializeField] private GameObject targetUnit;
     [SerializeField] private GameObject unitToAttack;
     [SerializeField] private GameObject weaponEffect;
     public bool attackAttempted = false;
@@ -37,16 +36,6 @@ public class EnemyUnitControl : MonoBehaviour
     private void Update()
     {
         friendlyUnits = GameObject.FindGameObjectsWithTag("FriendlyUnit");
-        AssignTarget();
-    }
-
-    private void AssignTarget()
-    {
-        if (targetUnit = null)
-        {
-            int randomTarget = Random.Range(0, friendlyUnits.Length);
-            targetUnit = friendlyUnits[randomTarget];
-        }
     }
 
     // Movement
@@ -71,13 +60,23 @@ public class EnemyUnitControl : MonoBehaviour
             targetNode.hasUnit = true;
             transform.position = targetNode.worldPosition;
             if (unitStats.AudioRarity() >= 0) unitStats.voiceSource.PlayOneShot(unitStats.moveAudio[unitStats.audioRarity]);
-        }
 
-        foreach (Node n in gridReference.grid)
-        {
-            if (n.withinMoveRange)
+            foreach (Node n in gridReference.grid)
             {
-                n.withinMoveRange = false;
+                if (n.withinMoveRange)
+                {
+                    n.withinMoveRange = false;
+                }
+            }
+        }
+        else
+        {
+            foreach (Node n in gridReference.grid)
+            {
+                if (n.withinMoveRange)
+                {
+                    n.withinMoveRange = false;
+                }
             }
         }
     }
@@ -153,13 +152,13 @@ public class EnemyUnitControl : MonoBehaviour
                 if (hit.collider != null)
                 {
                     attacked = true;
-                    StartCoroutine(AttackEffect(currentNode, targetNode, hit));
 
                     if (hit.collider.CompareTag("FriendlyUnit"))
                     {
+                         hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
+                        
+                        StartCoroutine(AttackEffect(currentNode, targetNode, hit));
                         StartCoroutine(hit.collider.GetComponent<UnitStats>().DamageEffect());
-                        hit.collider.gameObject.GetComponent<UnitStats>().health = hit.collider.gameObject.GetComponent<UnitStats>().health - this.GetComponent<UnitStats>().attackDamage;
-
 
                         if (hit.collider.GetComponent<UnitStats>().health <= 0)
                         {
@@ -169,6 +168,8 @@ public class EnemyUnitControl : MonoBehaviour
                     else if (hit.collider.CompareTag("FriendlyBase"))
                     {
                         hit.collider.gameObject.GetComponent<BaseStats>().health = hit.collider.gameObject.GetComponent<BaseStats>().health - this.GetComponent<UnitStats>().attackDamage;
+
+                        StartCoroutine(AttackEffect(currentNode, targetNode, hit));
                     }
                     else
                     {

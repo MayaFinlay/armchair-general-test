@@ -42,6 +42,7 @@ public class EnemyAI : MonoBehaviour
 
     public void BuyUnits()
     {
+        enemyUnits = GameObject.FindGameObjectsWithTag("EnemyUnit");
         if (enemyUnits.Length < maxEnemies && turnReference.enemyTurn)
         {
             switch (enemyCurrency)

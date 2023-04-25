@@ -150,14 +150,14 @@ public class TurnManager : MonoBehaviour
         {
             if (turnCounter >= 3)
             {
-                if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0)
+                if ((friendlyUnits.Length <= 0 && shopReference.playerCurrency < shopReference.shopPrices[0]) || friendlyBase.GetComponent<BaseStats>().health <= 0 && enemyTurn)
                 {
                     AudioStop();
                     gameOver = true;
                     playerLost = true;
                     Defeat();
                 }
-                else if ((enemyUnits.Length <= 0 && enemyReference.enemyCurrency < shopReference.shopPrices[0]) || enemyBase.GetComponent<BaseStats>().health <= 0)
+                else if ((enemyUnits.Length <= 0 && enemyReference.enemyCurrency < shopReference.shopPrices[0]) || enemyBase.GetComponent<BaseStats>().health <= 0 && playerTurn)
                 {
                     AudioStop();
                     gameOver = true;

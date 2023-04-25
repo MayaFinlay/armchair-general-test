@@ -205,7 +205,7 @@ public class UnitControl : MonoBehaviour
                             currentArray[i].tag = "Walkable";
                             currentArray[i].GetComponent<SpriteRenderer>().enabled = true;
                         }
-                        else if (currentArray[i - 1].CompareTag("Walkable")) // needs reworked
+                        else if (currentArray[i - 1].CompareTag("Walkable"))
                         {
                             n.withinMoveRange = true;
                             currentArray[i].tag = "Walkable";
